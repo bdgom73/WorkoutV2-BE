@@ -1,0 +1,84 @@
+package app.workout.Service.Calendar;
+
+import app.workout.Entity.Calendar.Calendar;
+import app.workout.Entity.Member.Member;
+import app.workout.Repository.CalendarRepository;
+import app.workout.Repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class CalendarService {
+
+    private final CalendarRepository calendarRepository;
+    private final MemberRepository memberRepository;
+
+    /**
+     * 특정 스케쥴 찾기
+     * */
+    public Calendar getSchedule(Long scheduleId){
+        return calendarRepository.findById(scheduleId).orElseThrow(()->{
+            throw new IllegalStateException("찾을 수 없는 일정입니다");
+        });
+    }
+
+    /**
+     * 범위의 스케쥴 찾기
+     * */
+    public List<Calendar> rangeSchedule(Long memberId,LocalDate start, LocalDate end){
+       return calendarRepository.findRangeByMember(memberId, start, end);
+    }
+
+    /**
+     * 페이징있는 스케쥴 전부 가져오기
+     * */
+    public List<Calendar> findAll(Pageable pageable){
+       return calendarRepository.findAll(pageable).get().collect(Collectors.toList());
+    }
+
+    /**
+     * 캘린더에 스케쥴 추가
+     * */
+    @Transactional
+    public Long addSchedule(Long memberId , LocalDate start, LocalDate end, String title, String memo, String color){
+//        Member member = new Member(); //TODO Member 설정
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> {
+            throw new IllegalStateException("찾을 수 없는 유저입니다.");
+        });
+        Calendar calendar = new Calendar();
+        calendar.setDate(start,end);
+        calendar.setContent(title,memo,color);
+        calendar.setMember(member);
+        calendarRepository.save(calendar);
+        return calendar.getId();
+    }
+
+    /**
+     * 캘린더 스케쥴 수정
+     * */
+    @Transactional
+    public Long updateSchedule(Long scheduleId, LocalDate start, LocalDate end, String title, String memo, String color){
+        Calendar calendar = calendarRepository.findById(scheduleId).orElseThrow(() -> {
+            throw new IllegalStateException("찾을 수 없는 일정입니다");
+        });
+        calendar.setDate(start,end);
+        calendar.setContent(title,memo,color);
+        return calendar.getId();
+    }
+
+    /**
+     * 캘린더 스케쥴 삭제
+     * */
+    @Transactional
+    public void deleteSchedule(Long scheduleId){
+        calendarRepository.deleteById(scheduleId);
+    }
+}
