@@ -31,7 +31,7 @@ class CalendarServiceTest {
         em.persist(member);
         LocalDate start = LocalDate.parse("2022-01-01");
         LocalDate end = LocalDate.parse("2022-01-08");
-        Long sId = calendarService.addSchedule(member, start, end, "testTitle", "testMemo", "#ffffff");
+        Long sId = calendarService.addSchedule(member.getId(), start, end, "testTitle", "testMemo", "#ffffff");
         em.flush();
         em.clear();
         //when

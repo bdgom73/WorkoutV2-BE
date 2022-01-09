@@ -17,7 +17,7 @@ public class Routine extends BaseEntity {
     @Column(name = "routine_id")
     private Long id;
     private String title;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private ExercisePart part;
     private boolean share;
 
@@ -47,12 +47,23 @@ public class Routine extends BaseEntity {
         volumes.add(volume);
         volume.setRoutine(this);
     }
-
+    public void changeRoutine(String title, ExercisePart part){
+        this.title = title;
+        this.part = part;
+    }
     //*생성 메서드*//
-    public static Routine createRoutine(String title, ExercisePart part, boolean share ,Member member, Volume... volume){
+    public static Routine createRoutine(String title, ExercisePart part, boolean share ,Member member, Volume... volumes){
         Routine routine = new Routine(title,part,share);
         routine.changeMember(member);
-        for (Volume v : volume) {
+        for (Volume v : volumes) {
+            routine.addVolumes(v);
+        }
+        return routine;
+    }
+    public static Routine createRoutine(String title, ExercisePart part, boolean share ,Member member, List<Volume> volumes){
+        Routine routine = new Routine(title,part,share);
+        routine.changeMember(member);
+        for (Volume v : volumes) {
             routine.addVolumes(v);
         }
         return routine;

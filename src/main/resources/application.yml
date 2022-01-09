@@ -5,16 +5,16 @@ spring:
     password:
     driver-class-name: org.h2.Driver
     sql-script-encoding: UTF-8
+
   jpa:
     open-in-view: true
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
-        # show_sql: true
         format_sql: true
-        defalut_batch_fetch_size : 100
-
+        default_batch_fetch_size : 300
+        # show_sql: true
   devtools:
     livereload:
       enabled: true
@@ -22,3 +22,4 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
 #  org.hibernate.type: trace
+

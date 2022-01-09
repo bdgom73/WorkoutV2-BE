@@ -37,4 +37,9 @@ public class Member extends BaseEntity {
         this.bodyData.add(bodyData);
     }
 
+    public void changeMember(String name, String nickname){
+        this.name = name;
+        this.nickname = nickname;
+    }
+
 }

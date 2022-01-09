@@ -1,12 +1,11 @@
 package app.workout.Controller.ReturnType;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class ReturnTypeV1<T> {
+public class ReturnTypeV1<T> extends BasicReturnType<T> {
 
-    private T data;
+    public ReturnTypeV1(T data) {
+        super(data);
+    }
 
 }

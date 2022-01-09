@@ -50,7 +50,9 @@ public class ExerciseRecordService {
         ExerciseRecord record = exerciseRecordRepository.findById(exerciseRecodeId).orElseThrow(() -> {
             throw new IllegalStateException("존재하지 않은 기록입니다");
         });
-        record.changeExerciseRecode(isWorkout,date,memo);
+        record.changeExerciseRecode(date,memo);
+        if(isWorkout) record.doExercise();
+        else record.doNotExercise();
         return record.getId();
     }
 
@@ -62,7 +64,8 @@ public class ExerciseRecordService {
         ExerciseRecord record = exerciseRecordRepository.findById(exerciseRecodeId).orElseThrow(() -> {
             throw new IllegalStateException("존재하지 않은 기록입니다");
         });
-        record.changeWorkoutState(isWorkout);
+        if(isWorkout) record.doExercise();
+        else record.doNotExercise();
     }
 
     /**

@@ -37,11 +37,11 @@ class BodyDataServiceTest {
 
         //when
         // 추가
-        Long dataId1 = bodyDataService.createBodyData(20, 180D, 90D, member);
-        Long dataId2= bodyDataService.createBodyData(20, 180D, 88D, member);
-        Long dataId3 = bodyDataService.createBodyData(20, 180D, 78D, member);
+        Long dataId1 = bodyDataService.createBodyData(member.getId(),20, 180D, 90D);
+        Long dataId2= bodyDataService.createBodyData(member.getId(),20, 180D, 88D);
+        Long dataId3 = bodyDataService.createBodyData(member.getId(),20, 180D, 78D);
         // 찾기
-        BodyData bodyData = bodyDataService.findBodyData(member.getId());
+        BodyData bodyData = bodyDataService.findBodyDataByMember(member.getId());
 
         //then
         Assertions.assertEquals(dataId1,6L);
@@ -55,9 +55,9 @@ class BodyDataServiceTest {
         //given
         Member member = new Member("test1","1111","test","tester");
         em.persist(member);
-        Long dataId1 = bodyDataService.createBodyData(20, 180D, 90D, member);
-        Long dataId2= bodyDataService.createBodyData(20, 180D, 88D, member);
-        Long dataId3 = bodyDataService.createBodyData(20, 180D, 78D, member);
+        Long dataId1 = bodyDataService.createBodyData(member.getId(), 20, 180D, 90D);
+        Long dataId2= bodyDataService.createBodyData(member.getId(), 20, 180D, 85D);
+        Long dataId3 = bodyDataService.createBodyData(member.getId(), 20, 180D, 80D);
         //when
         List<BodyData> bds = bodyDataService.findAll(PageRequest.of(0, 10));
         //then
@@ -73,7 +73,7 @@ class BodyDataServiceTest {
         //given
         Member member = new Member("test1","1111","test","tester");
         em.persist(member);
-        Long dataId = bodyDataService.createBodyData(20, 180D, 78D, member);
+        Long dataId = bodyDataService.createBodyData(member.getId(),20, 180D, 78D);
         em.flush();
         em.clear();
         //when
@@ -88,7 +88,7 @@ class BodyDataServiceTest {
         //given
         Member member = new Member("test1","1111","test","tester");
         em.persist(member);
-        Long dataId = bodyDataService.createBodyData(20, 180D, 78D, member);
+        Long dataId = bodyDataService.createBodyData(member.getId(),20, 180D, 78D);
         em.flush();
         em.clear();
         //when

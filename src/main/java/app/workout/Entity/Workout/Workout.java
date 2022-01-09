@@ -16,9 +16,9 @@ public class Workout extends BaseEntity {
     private Long id;
     private String name;
     private String imageUrl;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private ExercisePart part;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private ExerciseType type;
 
     @Column(columnDefinition = "TEXT")
