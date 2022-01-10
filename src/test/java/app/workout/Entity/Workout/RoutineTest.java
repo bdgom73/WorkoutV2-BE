@@ -1,8 +1,7 @@
 package app.workout.Entity.Workout;
 
 import app.workout.Entity.Member.Member;
-import app.workout.Service.FileUpload;
-import app.workout.Service.Routine.CreateVolumeDTO;
+import app.workout.Service.FileUpload.FileUpload;
 import app.workout.Service.Routine.RoutineService;
 import app.workout.Service.Routine.VolumeService;
 import org.junit.jupiter.api.Test;
@@ -12,11 +11,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

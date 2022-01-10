@@ -2,6 +2,7 @@ package app.workout.Controller.Calendar;
 
 import app.workout.Controller.ReturnType.ReturnTypeV1;
 import app.workout.Entity.Calendar.Calendar;
+import app.workout.Service.ArgumentResolver.Login.Login;
 import app.workout.Service.Calendar.CalendarService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,10 +31,11 @@ public class CalendarController {
             @RequestParam(value = "start", defaultValue = "#{T(java.time.LocalDateTime).now()}")
             @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam(value = "end", defaultValue = "#{T(java.time.LocalDateTime).now()}")
-            @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE) LocalDate end
+            @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE) LocalDate end,
+            @Login Long memberId
     ){
-        //TODO MEMBER 가져오기
-        List<Calendar> calendars = calendarService.rangeSchedule(1L, start, end);
+        if(memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
+        List<Calendar> calendars = calendarService.rangeSchedule(memberId, start, end);
         List<CalendarRequest> resultData = calendars.stream().map(CalendarRequest::new).collect(Collectors.toList());
         return new ReturnTypeV1<>(resultData);
     }
@@ -42,15 +44,17 @@ public class CalendarController {
      * 스케쥴 상세보기
      * */
     @GetMapping("/schedule/{scheduleId}")
-    public ReturnTypeV1<CalendarResponse> getSchedule(@PathVariable("scheduleId") Long scheduleId){
+    public ReturnTypeV1<CalendarResponse> getSchedule(@PathVariable("scheduleId") Long scheduleId, @Login Long memberId){
+        if(memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
         Calendar schedule = calendarService.getSchedule(scheduleId);
+        if(!memberId.equals(schedule.getMember().getId())) throw new IllegalStateException("권한이 없습니다");
         return new ReturnTypeV1<>(new CalendarResponse(schedule));
     }
 
     @PostMapping("/schedule")
-    public ReturnTypeV1<Long> addSchedule(@RequestBody CalendarRequest calendarRequest){
-        //TODO MEMBER 가져오기
-        Long calendarId = calendarService.addSchedule(1L,
+    public ReturnTypeV1<Long> addSchedule(@RequestBody CalendarRequest calendarRequest, @Login Long memberId){
+        if(memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
+        Long calendarId = calendarService.addSchedule(memberId,
                 calendarRequest.getStartDate(), calendarRequest.getEndDate(),
                 calendarRequest.getTitle(), calendarRequest.getMemo(), calendarRequest.getColor());
 

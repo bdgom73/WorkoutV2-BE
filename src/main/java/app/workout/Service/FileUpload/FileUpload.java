@@ -1,4 +1,4 @@
-package app.workout.Service;
+package app.workout.Service.FileUpload;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -19,22 +19,30 @@ public class FileUpload {
     @Value("${FILE_CLASSPATH}")
     private String CLASSPATH;
 
-    // 파일 저장
+    /**
+     * 이미지 파일 저장
+     * @param file MultipartFile
+     * @param path storage path
+     * */
     public String fileSave(MultipartFile file, String path){
-        // 현재시간 가져오기
-        long date = System.currentTimeMillis();
-        String rs = date + file.getName();
+
+        // 파일 이름 설정
+        long date = System.currentTimeMillis();  // 현재시간 가져오기
+        String rs = date + file.getName(); // 파일 이름
+
+        // 실제 저장위치 설정
         StringBuilder sb = new StringBuilder();
-        // 확장자 가져오기
-        String ext = takeExtension(file.getOriginalFilename());
+        String ext = takeExtension(file.getOriginalFilename());  // 확장자 가져오기
         sb.append(CLASSPATH).append(path).append("/").append(date).append(rs).append(".").append(ext);
         String safe_pathname = sb.toString(); // 실제 저장될 위치
+
+        // 저장될 위치 설정
         sb = new StringBuilder();
         sb.append(path).append("/").append(date).append(rs).append(".").append(ext);
-
         try {
-            String save_pathname = sb.toString(); // 가져올 위치
-            file.transferTo(new File(safe_pathname)); // 파일저장
+            // 파일저장
+            String save_pathname = sb.toString();
+            file.transferTo(new File(safe_pathname));
             return save_pathname;
         }catch (Exception e) {
             e.printStackTrace();
@@ -42,11 +50,19 @@ public class FileUpload {
         }
     }
 
+    /**
+     * 확장자 가져오기
+     * @param fileName ex) file.png
+     * @return if the filename is null, return 'png'
+     * */
     public String takeExtension(String fileName){
-        if(fileName == null) return null;
+        if(fileName == null) return "png";
         return fileName.split("[.]")[1];
     }
 
+    /**
+     * @return CLASSPATH
+     * */
     public String getClasspath(){
         return CLASSPATH;
     }

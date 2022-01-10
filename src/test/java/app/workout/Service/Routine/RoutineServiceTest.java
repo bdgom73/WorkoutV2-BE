@@ -4,17 +4,13 @@ import app.workout.Entity.Workout.Routine;
 import app.workout.Entity.Workout.Volume;
 import app.workout.Entity.Workout.Workout;
 import app.workout.Repository.WorkoutRepository;
-import app.workout.Service.FileUpload;
-import app.workout.Service.Workout.WorkoutService;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -2,9 +2,10 @@ package app.workout.Service.Member;
 
 import app.workout.Entity.Member.Member;
 import app.workout.Repository.MemberRepository;
+import app.workout.Service.Jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,15 +20,17 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
+    private final JwtTokenService jwtTokenService;
+    private final PasswordEncoder passwordEncoder;
     /**
      * 로그인 로직
-     * */
-    public Long login(String email, String password){
+     *
+     * @return*/
+    public String login(String email, String password){
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다"));
         if(member == null) return null;
-        if(!member.getPassword().equals(password)) return null;
-        return member.getId();
+        if(!passwordEncoder.matches(password, member.getPassword())) return null;
+        return jwtTokenService.createToken(member.getId());
     }
 
     /**
@@ -37,7 +40,8 @@ public class MemberService {
     public Long join(String email, String password, String name, String nickname){
         boolean isUsed = memberRepository.findByEmail(email).isPresent();
         if(isUsed) return null;
-        Member member = new Member(email,password,name,nickname);
+        String encodePassword = passwordEncoder.encode(password);
+        Member member = new Member(email, encodePassword, name, nickname);
         memberRepository.save(member);
         return member.getId();
     }

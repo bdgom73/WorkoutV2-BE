@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,15 +16,15 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public ReturnTypeV1<Long> loginMember(@RequestBody LoginRequest loginRequest){
-        Long memberId = memberService.login(loginRequest.getEmail(), loginRequest.getPassword());
-        return new ReturnTypeV1<Long>(memberId);
+    public ReturnTypeV1<String> loginMember(@RequestBody LoginRequest loginRequest){
+        String token = memberService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        return new ReturnTypeV1<>(token);
     }
 
     @PostMapping("/join")
     public ReturnTypeV1<Long> joinMember(@RequestBody JoinRequest joinRequest){
         Long memberId = memberService.join(joinRequest.email,joinRequest.password,joinRequest.name,joinRequest.nickname);
-        return new ReturnTypeV1<Long>(memberId);
+        return new ReturnTypeV1<>(memberId);
     }
 
     @Data

@@ -32,14 +32,13 @@ public class RoutineController {
     ){
         List<SingleRoutineResponse> result = routineService.findAll(PageRequest.of(page, size)).stream()
                 .map(SingleRoutineResponse::new).collect(Collectors.toList());
-        ReturnTypeV1<List<SingleRoutineResponse>> listReturnTypeV1 = new ReturnTypeV1<>(result);
-        return listReturnTypeV1;
+        return new ReturnTypeV1<>(result);
     }
 
     @GetMapping("/routines/{routineId}")
-    public void routineList(@PathVariable("routineId") Long routineId){
+    public ReturnTypeV1<SingleRoutineResponse> routineList(@PathVariable("routineId") Long routineId){
         Routine routine = routineService.findOne(routineId);
-//        return new ReturnTypeV1<>()
+        return new ReturnTypeV1<>(new SingleRoutineResponse(routine));
     }
 
     @Data

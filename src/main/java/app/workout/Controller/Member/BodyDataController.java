@@ -23,11 +23,10 @@ import java.util.stream.Collectors;
 public class BodyDataController {
 
     private final BodyDataService bodyDataService;
-    @Autowired
-    EntityManager em;
+    private final EntityManager em;
 
     /**
-     * 범위의 바디데이터 전부 리턴
+     * 페이징 바디데이터 리턴
      * */
     @GetMapping("/body-data")
     public ReturnTypeV1<List<BodyDataResponse>> getBodyDataList(
@@ -41,7 +40,7 @@ public class BodyDataController {
     }
 
     /**
-     * 특정 바디데이터 리턴
+     * 바디데이터 상세 리턴
      * */
     @GetMapping("/body-data/{bodyDataId}")
     public ReturnTypeV1<BodyDataResponse> getBodyData(@PathVariable("bodyDataId") Long bodyDataId){
