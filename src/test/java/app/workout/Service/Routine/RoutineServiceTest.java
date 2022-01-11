@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -107,6 +110,11 @@ class RoutineServiceTest {
         //when
         Routine one = routineService.findRoutine(rid);
         //then
+
+    }
+
+    @Test
+    void createRoutineV1_1Test(){
 
     }
 

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,7 +93,28 @@ public class VolumeService {
     public List<Long> createVolume(List<CreateVolumeDTO> volumeDTOS){
         return volumeDTOS.stream().map(v -> createVolume(v.getNum(), v.getSets(), v.getWorkoutId())).collect(Collectors.toList());
     }
+    @Transactional
+    public List<Volume> createVolumeV2(List<CreateVolumeDTO> volumeDTOS){
+        List<Volume> volumes = new ArrayList<>();
+        volumeDTOS.forEach(v -> {
+            Workout workout = workoutService.findOne(v.getWorkoutId());
+            volumes.add(Volume.createVolume(v.getNum(), v.getSets(), workout));
+        });
+        return volumes;
+    }
 
+    @Transactional
+    public Long editVolume(Long volumeId, Long  workoutId, int num, int sets){
+        Workout workout = workoutService.findOne(workoutId);
+        Volume volume = findOne(volumeId);
+        volume.changeVolume(num,sets);
+        volume.setWorkout(workout);
+        return volume.getId();
+    }
 
+    @Transactional
+    public void deleteVolume(Long volumeId){
+        volumeRepository.deleteById(volumeId);
+    }
 
 }

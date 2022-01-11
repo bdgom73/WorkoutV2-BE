@@ -46,11 +46,14 @@ public class CalendarController {
     @GetMapping("/schedule/{scheduleId}")
     public ReturnTypeV1<CalendarResponse> getSchedule(@PathVariable("scheduleId") Long scheduleId, @Login Long memberId){
         if(memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
-        Calendar schedule = calendarService.getSchedule(scheduleId);
+        Calendar schedule = calendarService.findById(scheduleId);
         if(!memberId.equals(schedule.getMember().getId())) throw new IllegalStateException("권한이 없습니다");
         return new ReturnTypeV1<>(new CalendarResponse(schedule));
     }
 
+    /**
+     * 일정 추가
+     * */
     @PostMapping("/schedule")
     public ReturnTypeV1<Long> addSchedule(@RequestBody CalendarRequest calendarRequest, @Login Long memberId){
         if(memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
@@ -59,6 +62,27 @@ public class CalendarController {
                 calendarRequest.getTitle(), calendarRequest.getMemo(), calendarRequest.getColor());
 
         return new ReturnTypeV1<>(calendarId);
+    }
+
+    /**
+     * 일정 수정
+     * */
+    @PutMapping("/schedule/{scheduleId}")
+    public ReturnTypeV1<CalendarResponse> editSchedule(@Login Long memberId, @PathVariable("scheduleId") Long scheduleId, @RequestBody CalendarRequest calendarRequest){
+        if(memberId == null) throw new IllegalStateException("해당 일정을 찾을 수 없습니다");
+        Calendar calendar = calendarService.updateSchedule(scheduleId, memberId,
+                calendarRequest.getStartDate(), calendarRequest.getEndDate(),
+                calendarRequest.getTitle(), calendarRequest.getMemo(), calendarRequest.getColor());
+        return new ReturnTypeV1<>(new CalendarResponse(calendar));
+    }
+
+    /**
+     * 일정 삭제
+     * */
+    @DeleteMapping("/schedule/{scheduleId}")
+    public void deleteSchedule(@Login Long memberId, @PathVariable("scheduleId") Long scheduleId){
+        if(memberId == null) throw new IllegalStateException("해당 일정을 찾을 수 없습니다");
+        calendarService.deleteSchedule(scheduleId,memberId);
     }
 
     @Data

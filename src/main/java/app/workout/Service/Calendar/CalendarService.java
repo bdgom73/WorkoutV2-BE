@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,11 +25,12 @@ public class CalendarService {
     /**
      * 특정 스케쥴 찾기
      * */
-    public Calendar getSchedule(Long scheduleId){
+    public Calendar findById(Long scheduleId){
         return calendarRepository.findById(scheduleId).orElseThrow(()->{
             throw new IllegalStateException("찾을 수 없는 일정입니다");
         });
     }
+
 
     /**
      * 범위의 스케쥴 찾기
@@ -65,13 +67,25 @@ public class CalendarService {
      * 캘린더 스케쥴 수정
      * */
     @Transactional
-    public Long updateSchedule(Long scheduleId, LocalDate start, LocalDate end, String title, String memo, String color){
+    public Calendar updateSchedule(Long scheduleId, Long memberId, LocalDate start, LocalDate end, String title, String memo, String color){
+        Calendar calendar = calendarRepository.findById(scheduleId).orElseThrow(() -> {
+            throw new IllegalStateException("찾을 수 없는 일정입니다");
+        });
+        if(!Objects.equals(scheduleId, memberId)){
+            throw new IllegalStateException("수정 권한이 없습니다.");
+        }
+        calendar.setDate(start,end);
+        calendar.setContent(title,memo,color);
+        return calendar;
+    }
+    @Transactional
+    public Calendar updateSchedule(Long scheduleId, LocalDate start, LocalDate end, String title, String memo, String color){
         Calendar calendar = calendarRepository.findById(scheduleId).orElseThrow(() -> {
             throw new IllegalStateException("찾을 수 없는 일정입니다");
         });
         calendar.setDate(start,end);
         calendar.setContent(title,memo,color);
-        return calendar.getId();
+        return calendar;
     }
 
     /**
@@ -80,5 +94,16 @@ public class CalendarService {
     @Transactional
     public void deleteSchedule(Long scheduleId){
         calendarRepository.deleteById(scheduleId);
+    }
+    /**
+     * 캘린더 스케쥴 삭제
+     * */
+    @Transactional
+    public void deleteSchedule(Long scheduleId, Long memberId){
+        Calendar calendar = findById(scheduleId);
+        if(!Objects.equals(calendar.getMember().getId(), memberId)){
+            throw new IllegalStateException("수정 권한이 없습니다.");
+        }
+        calendarRepository.delete(calendar);
     }
 }

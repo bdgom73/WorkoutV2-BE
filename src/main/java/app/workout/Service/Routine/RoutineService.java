@@ -14,7 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -69,22 +71,24 @@ public class RoutineService {
     /**
      * 루틴 생성
      * */
+    @Transactional
     public Long createRoutine(Long memberId, String title, ExercisePart part, boolean share, List<Volume> volumes){
         Member member = memberService.findOne(memberId);
         Routine routine = Routine.createRoutine(title, part, share, member, volumes);
         routineRepository.save(routine);
         return routine.getId();
     }
+    @Transactional
     public Long createRoutine(Long memberId, String title, ExercisePart part, boolean share, Volume... volumes){
         Member member = memberService.findOne(memberId);
         Routine routine = Routine.createRoutine(title, part, share, member, volumes);
         routineRepository.save(routine);
         return routine.getId();
     }
-
     /**
      * 루틴에 볼륨 추가
      * */
+    @Transactional
     public Long addVolume(Long routineId, Long workoutId, int num , int sets){
         Workout workout = workoutService.findOne(workoutId);
         Routine routine = findOne(routineId);
@@ -95,10 +99,24 @@ public class RoutineService {
      * 루틴의 제목과 부위 수정
      * */
     @Transactional
-    public void updateRoutine(Long routineId,String title, ExercisePart part){
+    public Long editRoutine(Long routineId, String title, ExercisePart part){
         Routine routine = routineRepository.findById(routineId).orElseThrow(() -> {
             throw new IllegalStateException("찾을 수 없는 루틴입니다");
         });
         routine.changeRoutine(title,part);
+        return routine.getId();
+    }
+
+    @Transactional
+    public void deleteRoutine(Long routineId){
+        routineRepository.deleteById(routineId);
+    }
+    @Transactional
+    public void deleteRoutine(Long routineId, Long memberId){
+        Routine routine = findByMember(routineId);
+        if(!Objects.equals(routine.getMember().getId(), memberId)){
+            throw new IllegalStateException("권한이 없습니다");
+        }
+        routineRepository.delete(routine);
     }
 }

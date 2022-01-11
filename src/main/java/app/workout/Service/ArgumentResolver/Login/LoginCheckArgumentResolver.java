@@ -39,11 +39,11 @@ public class LoginCheckArgumentResolver implements HandlerMethodArgumentResolver
 
         try{
             String token = jwtTokenService.extractToken(authorization);
+            jwtTokenService.expired(token);
             Long userId = jwtTokenService.getUserInformation(token);
             log.info("Access User [{}][{}]",requestURI,userId);
             return userId;
         }catch (Exception e){
-//            log.error("error", e);
             log.info("Inaccessible User [{}]", requestURI);
             return null;
         }

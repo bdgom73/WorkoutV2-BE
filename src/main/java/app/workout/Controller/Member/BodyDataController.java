@@ -2,12 +2,10 @@ package app.workout.Controller.Member;
 
 import app.workout.Controller.ReturnType.ReturnTypeV1;
 import app.workout.Entity.Member.BodyData;
-import app.workout.Entity.Member.Member;
 import app.workout.Service.Member.BodyDataService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,7 +73,7 @@ public class BodyDataController {
     @PutMapping("/body-data/{bodyDataId}")
     public ReturnTypeV1<BodyDataResponse> updateBodyData(
             @PathVariable("bodyDataId") Long bodyDataId,
-            @RequestBody updateBodyDataRequest bodyDataRequest
+            @RequestBody EditBodyDataRequest bodyDataRequest
     ){
         Long bId = bodyDataService.updateBodyData(bodyDataId ,bodyDataRequest.getAge(),bodyDataRequest.getHeight(),bodyDataRequest.getWeight());
         BodyData bodyData = bodyDataService.findById(bId);
@@ -109,7 +107,7 @@ public class BodyDataController {
     }
 
     @Data
-    private static class updateBodyDataRequest{
+    private static class EditBodyDataRequest {
         @NotBlank
         private Long bodyDateId;
         @NotBlank

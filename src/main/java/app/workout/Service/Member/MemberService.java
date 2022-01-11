@@ -1,5 +1,6 @@
 package app.workout.Service.Member;
 
+import app.workout.Entity.Member.BodyData;
 import app.workout.Entity.Member.Member;
 import app.workout.Repository.MemberRepository;
 import app.workout.Service.Jwt.JwtTokenService;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final BodyDataService bodyDataService;
     private final JwtTokenService jwtTokenService;
     private final PasswordEncoder passwordEncoder;
     /**
@@ -66,11 +69,31 @@ public class MemberService {
      * 유저의 이름과 닉네임 변경
      * */
     @Transactional
-    public void updateMember(Long memberId, @NotBlank String name, @NotBlank String nickname){
+    public Long updateMember(Long memberId, @NotBlank String name, @NotBlank String nickname){
         Member member = memberRepository.findById(memberId).orElseThrow(() -> {
             throw new IllegalStateException("유저를 찾을 수 없습니다");
         });
         member.changeMember(name,nickname);
+        return member.getId();
     }
+    @Transactional
+    public Long updateMember(Long memberId, Long loginId, @NotBlank String name, @NotBlank String nickname){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> {
+            throw new IllegalStateException("유저를 찾을 수 없습니다");
+        });
+        if(!Objects.equals(loginId, memberId)) throw new IllegalStateException("수정 권한이 없습니다");
+        member.changeMember(name,nickname);
+        return member.getId();
+    }
+    public MemberDataDto findMemberOneBodyData(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> {
+            throw new IllegalStateException("유저를 찾을 수 없습니다");
+        });
 
+        BodyData bodyDataByMember = bodyDataService.findBodyDataByMember(member.getId());
+
+        return new MemberDataDto(member.getId(),member.getEmail(),member.getName(),member.getNickname(),
+                bodyDataByMember.getId(),bodyDataByMember.getAge(),bodyDataByMember.getHeight(),bodyDataByMember.getWeight());
+
+    }
 }

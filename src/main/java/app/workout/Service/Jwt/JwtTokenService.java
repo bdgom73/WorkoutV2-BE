@@ -77,7 +77,7 @@ public class JwtTokenService {
      * @param token 순수 token
      * @return 만약 만료시간이 지나지 않았으면 <u>TRUE</u> 그렇지 않으면 <u>FALSE</u>
      * */
-    private boolean Expired(String token) {
+    private boolean isExpired(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
@@ -85,6 +85,12 @@ public class JwtTokenService {
             return false;
         }
     }
+    public void expired(String token) {
+       if(!isExpired(token)){
+           throw new IllegalStateException("만료된 토큰입니다");
+       }
+    }
+
 
     /**
      * authorization 헤더의 token 의 Empty 여부 확인

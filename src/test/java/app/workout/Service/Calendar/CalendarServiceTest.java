@@ -35,7 +35,7 @@ class CalendarServiceTest {
         em.flush();
         em.clear();
         //when
-        Calendar schedule = calendarService.getSchedule(sId);
+        Calendar schedule = calendarService.findById(sId);
         //then
         Assertions.assertEquals(schedule.getColor(),"#ffffff");
         Assertions.assertEquals(schedule.getStartDate(), LocalDate.parse("2022-01-01"));
