@@ -1,4 +1,4 @@
-package app.workout.Repository;
+package app.workout.Repository.Workout;
 
 import app.workout.Entity.Workout.Routine;
 import org.springframework.data.domain.Page;

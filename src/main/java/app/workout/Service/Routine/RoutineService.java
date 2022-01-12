@@ -5,7 +5,7 @@ import app.workout.Entity.Workout.Eunm.ExercisePart;
 import app.workout.Entity.Workout.Routine;
 import app.workout.Entity.Workout.Volume;
 import app.workout.Entity.Workout.Workout;
-import app.workout.Repository.RoutineRepository;
+import app.workout.Repository.Workout.RoutineRepository;
 import app.workout.Service.Member.MemberService;
 import app.workout.Service.Workout.WorkoutService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Objects;
 

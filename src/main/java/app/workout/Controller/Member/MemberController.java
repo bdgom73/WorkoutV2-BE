@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -44,7 +45,7 @@ public class MemberController {
      * */
     @GetMapping("/member")
     public ReturnTypeV1<MemberDataDto> LoginMember(@Login Long memberId){
-        if(memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
+        memberService.loginCheck(memberId);
         MemberDataDto findMember = memberService.findMemberOneBodyData(memberId);
         return new ReturnTypeV1<>(findMember);
     }
@@ -65,6 +66,7 @@ public class MemberController {
     /**
      * 유저 검색
      * */
+
     @GetMapping("/members/{memberId}")
     public ReturnTypeV1<MemberResponse> getMember(@PathVariable("memberId") Long memberId){
         Member member = memberService.findOne(memberId);
@@ -80,6 +82,16 @@ public class MemberController {
         MemberDataDto findMember = memberService.findMemberOneBodyData(mId);
         return new ReturnTypeV1<>(findMember);
     }
+
+    /**
+     * 로그인 유저 아바타 추가 및 수정
+     * */
+    @PostMapping("/members/avatar")
+    public void addMemberAvatar(@Login Long memberId, @RequestParam("avatar")MultipartFile file){
+        memberService.loginCheck(memberId);
+        memberService.changeAvatar(file, memberId);
+    }
+
 
     @Data
     private static class LoginRequest{

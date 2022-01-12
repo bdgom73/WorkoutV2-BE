@@ -1,9 +1,8 @@
 package app.workout.Service.Routine;
 
-import app.workout.Entity.Workout.Routine;
 import app.workout.Entity.Workout.Volume;
 import app.workout.Entity.Workout.Workout;
-import app.workout.Repository.VolumeRepository;
+import app.workout.Repository.Workout.VolumeRepository;
 import app.workout.Service.Workout.WorkoutService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -2,11 +2,10 @@ package app.workout.Service.Member;
 
 import app.workout.Entity.Member.BodyData;
 import app.workout.Entity.Member.Member;
-import app.workout.Repository.BodyDataRepository;
-import app.workout.Repository.MemberRepository;
+import app.workout.Repository.Member.BodyDataRepository;
+import app.workout.Repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

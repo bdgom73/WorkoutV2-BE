@@ -1,4 +1,4 @@
-package app.workout.Repository;
+package app.workout.Repository.Workout;
 
 import app.workout.Entity.Workout.Workout;
 import org.springframework.data.jpa.repository.JpaRepository;

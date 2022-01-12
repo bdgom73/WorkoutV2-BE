@@ -15,6 +15,7 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
+    private String avatarUrl;
     private String email;
     private String password;
     private String name;
@@ -40,6 +41,10 @@ public class Member extends BaseEntity {
     public void changeMember(String name, String nickname){
         this.name = name;
         this.nickname = nickname;
+    }
+
+    public void changeAvatarUrl(String avatarUrl){
+        this.avatarUrl = avatarUrl;
     }
 
 }

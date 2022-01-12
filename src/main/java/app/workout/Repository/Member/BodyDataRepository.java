@@ -1,4 +1,4 @@
-package app.workout.Repository;
+package app.workout.Repository.Member;
 
 import app.workout.Entity.Member.BodyData;
 import app.workout.Entity.Member.Member;

@@ -3,7 +3,7 @@ package app.workout.Service.Calendar;
 import app.workout.Entity.Calendar.Calendar;
 import app.workout.Entity.Member.Member;
 import app.workout.Repository.CalendarRepository;
-import app.workout.Repository.MemberRepository;
+import app.workout.Repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

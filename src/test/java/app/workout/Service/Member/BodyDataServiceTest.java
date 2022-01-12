@@ -2,7 +2,7 @@ package app.workout.Service.Member;
 
 import app.workout.Entity.Member.BodyData;
 import app.workout.Entity.Member.Member;
-import app.workout.Repository.BodyDataRepository;
+import app.workout.Repository.Member.BodyDataRepository;
 //import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -2,13 +2,16 @@ package app.workout.Service.Member;
 
 import app.workout.Entity.Member.BodyData;
 import app.workout.Entity.Member.Member;
-import app.workout.Repository.MemberRepository;
+import app.workout.Repository.Member.MemberRepository;
+import app.workout.Service.FileUpload.FileUpload;
 import app.workout.Service.Jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -25,6 +28,8 @@ public class MemberService {
     private final BodyDataService bodyDataService;
     private final JwtTokenService jwtTokenService;
     private final PasswordEncoder passwordEncoder;
+    private final FileUpload fileUpload;
+
     /**
      * 로그인 로직
      *
@@ -47,6 +52,16 @@ public class MemberService {
         Member member = new Member(email, encodePassword, name, nickname);
         memberRepository.save(member);
         return member.getId();
+    }
+
+    /**
+     * 유저 아바타 변경 & 추가
+     * */
+    @Transactional
+    public void changeAvatar(MultipartFile file, Long memberId){
+        String avatarUrl = fileUpload.saveAvatar(file);
+        Member member = findOne(memberId);
+        member.changeAvatarUrl(avatarUrl);
     }
 
     /**
@@ -96,4 +111,9 @@ public class MemberService {
                 bodyDataByMember.getId(),bodyDataByMember.getAge(),bodyDataByMember.getHeight(),bodyDataByMember.getWeight());
 
     }
+
+    public void loginCheck(Long memberId) {
+        if (memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
+    }
+
 }

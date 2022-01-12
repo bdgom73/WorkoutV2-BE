@@ -3,13 +3,9 @@ package app.workout.Service.FileUpload;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.File;
-import java.util.Date;
-import java.util.Objects;
 
 
 @Component
@@ -20,12 +16,28 @@ public class FileUpload {
     private String CLASSPATH;
 
     /**
-     * 이미지 파일 저장
+     * 아바타 이미지 파일 저장
      * @param file MultipartFile
-     * @param path storage path
      * */
-    public String fileSave(MultipartFile file, String path){
+    public String saveAvatar(MultipartFile file){
+        String path = "/avatars";
+        return fileSave(file, path);
+    }
 
+
+    /**
+     * 운동 이미지 파일 저장
+     * @param file MultipartFile
+     * */
+    public String saveWorkoutImage(MultipartFile file){
+        String path = "/workouts";
+        return fileSave(file, path);
+    }
+
+    /**
+     * 파일저장
+     * */
+    private String fileSave(MultipartFile file, String path) {
         // 파일 이름 설정
         long date = System.currentTimeMillis();  // 현재시간 가져오기
         String rs = date + file.getName(); // 파일 이름

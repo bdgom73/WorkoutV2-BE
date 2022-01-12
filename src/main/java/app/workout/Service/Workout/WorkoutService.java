@@ -3,7 +3,7 @@ package app.workout.Service.Workout;
 import app.workout.Entity.Workout.Eunm.ExercisePart;
 import app.workout.Entity.Workout.Eunm.ExerciseType;
 import app.workout.Entity.Workout.Workout;
-import app.workout.Repository.WorkoutRepository;
+import app.workout.Repository.Workout.WorkoutRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;

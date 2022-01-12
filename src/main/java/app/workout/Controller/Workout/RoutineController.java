@@ -74,7 +74,6 @@ public class RoutineController {
         private List<CreateVolumeDTO> volumes;
     }
 
-
     @Data
     private static class RoutineResponse {
         private Long routineId;
