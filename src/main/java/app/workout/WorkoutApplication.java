@@ -5,7 +5,7 @@ import app.workout.Entity.Workout.Routine;
 import app.workout.Entity.Workout.Volume;
 import app.workout.Entity.Workout.Workout;
 import app.workout.Repository.Member.MemberRepository;
-import app.workout.Repository.Workout.RoutineRepository;
+import app.workout.Repository.Routine.RoutineRepository;
 import app.workout.Repository.Workout.WorkoutRepository;
 import app.workout.Service.Member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;

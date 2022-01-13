@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -106,13 +108,13 @@ class RoutineServiceTest {
 
         //when
         Routine one = routineService.findRoutine(rid);
+        List<Volume> volumes = one.getVolumes();
+        for (Volume volume : volumes) {
+            System.out.println("volume = " + volume.getId());
+            System.out.println("volume = " + volume.getWorkout().getName());
+        }
         //then
-
-    }
-
-    @Test
-    void createRoutineV1_1Test(){
-
+        assertEquals(one.getMember().getId(), 1);
     }
 
 

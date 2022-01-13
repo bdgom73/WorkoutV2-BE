@@ -21,6 +21,7 @@ public class MemberRepositoryImpl implements MemberSearchRepository {
     @Override
     public List<Member> findSearchByName(String name, Pageable pageable) {
         JPAQuery<Member> query = new JPAQuery<>(em);
+        
         QMember member = QMember.member;
         return query.select(member).from(member)
                 .where(member.name.toUpperCase().contains(name.toUpperCase()))

@@ -5,7 +5,7 @@ import app.workout.Entity.Workout.Eunm.ExercisePart;
 import app.workout.Entity.Workout.Routine;
 import app.workout.Entity.Workout.Volume;
 import app.workout.Entity.Workout.Workout;
-import app.workout.Repository.Workout.RoutineRepository;
+import app.workout.Repository.Routine.RoutineRepository;
 import app.workout.Service.Member.MemberService;
 import app.workout.Service.Workout.WorkoutService;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +27,17 @@ public class RoutineService {
     private final RoutineRepository routineRepository;
     private final MemberService memberService;
     private final WorkoutService workoutService;
-
     /**
      * 루틴 검색
      * */
     public Routine findOne(Long routineId){
         return routineRepository.findById(routineId).orElseThrow(()->{
+            throw new IllegalStateException("루틴 정보를 찾을 수 없습니다.");
+        });
+    }
+
+    public Routine findRoutineAll(Long routineId){
+        return routineRepository.findRoutineAll(routineId).orElseThrow(()->{
             throw new IllegalStateException("루틴 정보를 찾을 수 없습니다.");
         });
     }
@@ -49,22 +54,27 @@ public class RoutineService {
         return routineRepository.findAllByMemberFetch(pageable);
     }
 
+
+    public List<Routine> findByShare(){
+        return routineRepository.findShareRoutine();
+    }
+    public List<Routine> findByShare(Pageable pageable){
+        return routineRepository.findShareRoutine(pageable);
+    }
+
     /**
      * 특정유저의 루틴 가져오기
      * */
     public List<Routine> findAllByMember(Long memberId ,Pageable pageable){
-        return routineRepository.findAllByMember(memberId,pageable);
+
+        return routineRepository.findAllByMember(memberId, pageable);
     }
 
     /**
      * 해당 루틴 정보(루틴, 볼륨, 운동) 연관관계 전부 매핑해서 가져오기
      * */
     public Routine findRoutine(Long routineId){
-        Routine routine = findOne(routineId);
-        for (Volume volume : routine.getVolumes()) {
-            volume.getWorkout().getName();
-        }
-        return routine;
+        return findRoutineAll(routineId);
     }
 
     /**

@@ -1,4 +1,4 @@
-package app.workout.Repository.Workout;
+package app.workout.Repository.Routine;
 
 import app.workout.Entity.Workout.Routine;
 import org.springframework.data.domain.Page;
@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface RoutineRepository extends JpaRepository<Routine, Long> {
+public interface RoutineRepository extends JpaRepository<Routine, Long> , RoutineSearchRepository{
 
     @Query("SELECT r FROM Routine r JOIN FETCH r.member m WHERE m.id=:memberId")
     List<Routine> findAllByMember(@Param("memberId") Long memberId, Pageable pageable); // 해당 유저의 루틴 리스트 가져오기
@@ -20,4 +20,11 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
 
     @Query("SELECT r FROM Routine r JOIN FETCH r.member m WHERE r.id=:routineId")
     Optional<Routine> findMemberFetch(Long routineId); // 해당 루틴의 유저 매핑 후 가져오기
+
+    @Query("SELECT r FROM Routine r JOIN FETCH r.member m" +
+            " JOIN FETCH r.volumes v" +
+            " JOIN FETCH v.workout w" +
+            " WHERE r.id = :routineId")
+    Optional<Routine> findRoutineAll(@Param("routineId") Long routineId); // 해당 루틴의 유저 매핑 후 가져오기
+
 }

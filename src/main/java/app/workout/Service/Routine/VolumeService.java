@@ -22,7 +22,6 @@ public class VolumeService {
 
     private final VolumeRepository volumeRepository;
     private final WorkoutService workoutService;
-    private final RoutineService routineService;
 
     /**
      * 볼륨 검색

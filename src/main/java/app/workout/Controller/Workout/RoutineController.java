@@ -5,6 +5,7 @@ import app.workout.Entity.Workout.Eunm.ExercisePart;
 import app.workout.Entity.Workout.Routine;
 import app.workout.Entity.Workout.Volume;
 import app.workout.Service.ArgumentResolver.Login.Login;
+import app.workout.Service.CustomSort;
 import app.workout.Service.Routine.CreateVolumeDTO;
 import app.workout.Service.Routine.RoutineService;
 import app.workout.Service.Routine.VolumeService;
@@ -12,9 +13,11 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,12 +32,18 @@ public class RoutineController {
     @GetMapping("/routines")
     public ReturnTypeV1<List<RoutineResponse>> routines(
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "sort", defaultValue = "createDate") String sortString,
+            @RequestParam(name = "direction", defaultValue = "aes") String direction
     ){
-        List<RoutineResponse> result = routineService.findAll(PageRequest.of(page, size)).stream()
+        Sort.Order order = CustomSort.getOrder(sortString, direction);
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(order));
+        List<RoutineResponse> result = routineService.findAll(pageRequest).stream()
                 .map(RoutineResponse::new).collect(Collectors.toList());
         return new ReturnTypeV1<>(result);
     }
+
+
 
     @GetMapping("/routines/{routineId}")
     public ReturnTypeV1<RoutineResponse> getRoutine(@PathVariable("routineId") Long routineId){
@@ -58,6 +67,15 @@ public class RoutineController {
     @DeleteMapping("/routines/{routineId}")
     public void deleteRoutine(@Login Long loginId, @PathVariable("routineId") Long routineId){
         routineService.deleteRoutine(routineId,loginId);
+    }
+
+    @GetMapping("/routines/share")
+    public void shareRoutines(
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "20") int size
+    ){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        routineService.findByShare(pageRequest);
     }
 
     @Data

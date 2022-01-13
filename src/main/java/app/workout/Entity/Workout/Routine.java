@@ -31,12 +31,16 @@ public class Routine extends BaseEntity {
     @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
     private List<Volume> volumes = new ArrayList<>();
 
-    protected Routine(){}
+    public Routine(){}
 
     public Routine(String title, ExercisePart part, boolean share) {
         this.title = title;
         this.part = part;
         this.share = share;
+    }
+
+    public void setVolumes(List<Volume> volumes) {
+        this.volumes = volumes;
     }
 
     //*연관관계 메서드*//
