@@ -28,14 +28,17 @@ class RoutineRepositoryTest {
 
     @Test
     void routineSortTest(){
-        Sort.Order test = Sort.Order.desc("test");
-        PageRequest pageRequest = PageRequest.of(20, 30, Sort.by(test));
+        PageRequest pageRequest = PageRequest.of(0, 30, Sort.by("title").descending());
 
-        Sort sort = pageRequest.getSort();
-        for (Sort.Order order : sort) {
-            Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
-            System.out.println("order.getProperty() = " + order.getProperty());
-            System.out.println("direction = " + direction);
+        List<Routine> t = routineRepository.findSearchByTitle("t", pageRequest);
+        for (Routine routine : t) {
+            System.out.println("routine = " + routine.getTitle());
         }
+
+    }
+    @Test
+    public void test(){
+        String direction = "desc";
+        PageRequest.of(20,30, Sort.Direction.valueOf(direction),"member");
     }
 }

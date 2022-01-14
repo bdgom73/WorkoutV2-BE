@@ -7,6 +7,8 @@ import app.workout.Service.Member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -22,8 +24,10 @@ class MemberRepositoryImplTest {
     @Test
     void searchTest(){
 
-        List<Member> test = memberRepository.findSearchByName("test");
+        PageRequest member_id = PageRequest.of(0, 100, Sort.by("name").by("email").ascending());
+        List<Member> test = memberRepository.findSearchByName("test",member_id);
         for (Member member : test) {
+            System.out.println("member = " + member.getId());
             System.out.println("member = " + member.getName());
         }
     }
