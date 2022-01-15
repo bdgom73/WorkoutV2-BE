@@ -8,12 +8,10 @@ import app.workout.Service.ArgumentResolver.Login.Login;
 import app.workout.Service.Routine.CreateVolumeDTO;
 import app.workout.Service.Routine.RoutineService;
 import app.workout.Service.Routine.VolumeService;
-import com.querydsl.core.types.Order;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -67,15 +65,36 @@ public class RoutineController {
         routineService.deleteRoutine(routineId,loginId);
     }
 
+    // 공유루틴
     @GetMapping("/routines/share")
-    public void shareRoutines(
+    public ReturnTypeV1<List<RoutineResponse>> shareRoutines(
             @RequestParam(value = "page",defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size,
             @RequestParam(name = "sort", defaultValue = "createDate") String sortString,
-            @RequestParam(name = "direction", defaultValue = "aes") String direction
+            @RequestParam(name = "direction", defaultValue = "AES") String direction
     ){
         PageRequest pageRequest = getPageRequest(page, size, sortString, direction);
-        routineService.findByShare(pageRequest);
+        List<RoutineResponse> result = routineService.findByShare(pageRequest)
+                .stream().map(RoutineResponse::new).collect(Collectors.toList());
+        return new ReturnTypeV1<>(result);
+    }
+
+    // 복사
+    @PostMapping("/routines/{routineId}/copy")
+    public ReturnTypeV1<Long> copyRoutines(@PathVariable("routineId") Long routineId, @Login Long memberId){
+        Long copyRoutineId = routineService.copyRoutine(routineId, memberId);
+        return new ReturnTypeV1<>(copyRoutineId);
+    }
+
+    // 추천
+    @PostMapping("/routines/{routineId}/recommend")
+    public void recommendRoutine(@Login Long memberId, @PathVariable("routineId") Long routineId){
+        routineService.recommend(routineId, memberId);
+    }
+
+    @DeleteMapping("/routines/{routineId}/recommend")
+    public void deleteRecommendRoutine(@Login Long memberId, @PathVariable("routineId") Long routineId){
+        routineService.recommendCancel(routineId,memberId);
     }
 
     @Data

@@ -2,9 +2,11 @@ package app.workout.Service.Routine;
 
 import app.workout.Entity.Member.Member;
 import app.workout.Entity.Workout.Eunm.ExercisePart;
+import app.workout.Entity.Workout.Recommendation;
 import app.workout.Entity.Workout.Routine;
 import app.workout.Entity.Workout.Volume;
 import app.workout.Entity.Workout.Workout;
+import app.workout.Repository.Routine.RecommendationRepository;
 import app.workout.Repository.Routine.RoutineRepository;
 import app.workout.Service.Member.MemberService;
 import app.workout.Service.Workout.WorkoutService;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,6 +30,8 @@ public class RoutineService {
     private final RoutineRepository routineRepository;
     private final MemberService memberService;
     private final WorkoutService workoutService;
+    private final RecommendationRepository recommendationRepository;
+
     /**
      * 루틴 검색
      * */
@@ -128,4 +133,44 @@ public class RoutineService {
         }
         routineRepository.delete(routine);
     }
+
+    @Transactional
+    public Long copyRoutine(Long routineId , Long memberId){
+        Routine routine = findByMember(routineId);
+        if(!routine.isShare()) throw new IllegalStateException("공유가 불가능한 루틴입니다");
+        Member member = memberService.findOne(memberId);
+        ArrayList<Volume> copyVolumes = new ArrayList<>();
+        routine.getVolumes().forEach(v-> copyVolumes.add(Volume.createVolume(v.getNum(),v.getSets(),v.getWorkout())));
+        Routine copyRoutine = Routine.copyRoutine(routine.getMember().getId() ,
+                "[copy]"+routine.getTitle(), routine.getPart() , member, copyVolumes);
+        routineRepository.save(copyRoutine);
+        return routine.getId();
+    }
+
+    @Transactional
+    public void recommend(Long routineId, Long memberId){
+        recommendationRepository.findByRoutineAndMember(routineId, memberId).ifPresent(r->{
+            throw new IllegalStateException("이미 추천 했습니다");
+        });
+        Routine routine = findOne(routineId);
+        Member member = memberService.findOne(memberId);
+        routine.recommend(member);
+    }
+
+    @Transactional
+    public void recommendCancel(Long routineId, Long memberId){
+        Recommendation recommendation = recommendationRepository.findByRoutineAndMember(routineId, memberId).orElseThrow(() -> {
+            throw new IllegalStateException("추천 기록이 없습니다");
+        });
+        recommendationRepository.delete(recommendation);
+    }
+
+    // SEARCH
+    public List<Routine> searchByTitle(String title){
+        return routineRepository.findSearchByTitle(title);
+    }
+    public List<Routine> searchByTitle(String title, Pageable pageable){
+        return routineRepository.findSearchByTitle(title,pageable);
+    }
+
 }

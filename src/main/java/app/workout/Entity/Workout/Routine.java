@@ -31,6 +31,9 @@ public class Routine extends BaseEntity {
     @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
     private List<Volume> volumes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
+    private List<Recommendation> recommendations = new ArrayList<>();
+
     public Routine(){}
 
     public Routine(String title, ExercisePart part, boolean share) {
@@ -55,10 +58,20 @@ public class Routine extends BaseEntity {
         this.title = title;
         this.part = part;
     }
+    private void setOriginalAuthor(Long originalAuthorId){
+        originalAuthor = originalAuthorId;
+    }
+
+    public void recommend(Member member){
+        Recommendation recommendation = Recommendation.doRecommend(this, member);
+        this.recommendations.add(recommendation);
+    }
+
     //*생성 메서드*//
     public static Routine createRoutine(String title, ExercisePart part, boolean share ,Member member, Volume... volumes){
         Routine routine = new Routine(title,part,share);
         routine.changeMember(member);
+        routine.setOriginalAuthor(member.getId());
         for (Volume v : volumes) {
             routine.addVolumes(v);
         }
@@ -72,4 +85,16 @@ public class Routine extends BaseEntity {
         }
         return routine;
     }
+
+    public static Routine copyRoutine(Long originalAuthor ,String title, ExercisePart part ,Member member, List<Volume> volumes){
+        Routine routine = new Routine(title,part,false);
+        routine.setOriginalAuthor(originalAuthor);
+        routine.changeMember(member);
+        for (Volume v : volumes) {
+            routine.addVolumes(v);
+        }
+        return routine;
+    }
+
+
 }

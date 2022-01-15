@@ -38,6 +38,8 @@ public class QRoutine extends EntityPathBase<Routine> {
 
     public final EnumPath<app.workout.Entity.Workout.Eunm.ExercisePart> part = createEnum("part", app.workout.Entity.Workout.Eunm.ExercisePart.class);
 
+    public final ListPath<Recommendation, QRecommendation> recommendations = this.<Recommendation, QRecommendation>createList("recommendations", Recommendation.class, QRecommendation.class, PathInits.DIRECT2);
+
     public final BooleanPath share = createBoolean("share");
 
     public final StringPath title = createString("title");

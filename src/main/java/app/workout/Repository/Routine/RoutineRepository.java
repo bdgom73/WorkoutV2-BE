@@ -19,7 +19,7 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> , Routin
     List<Routine> findAllByMemberFetch(Pageable pageable); // 루틴 , 유저 매핑해서 리스트 가져오기
 
     @Query("SELECT r FROM Routine r JOIN FETCH r.member m WHERE r.id=:routineId")
-    Optional<Routine> findMemberFetch(Long routineId); // 해당 루틴의 유저 매핑 후 가져오기
+    Optional<Routine> findMemberFetch(@Param("routineId") Long routineId); // 해당 루틴의 유저 매핑 후 가져오기
 
     @Query("SELECT r FROM Routine r JOIN FETCH r.member m" +
             " JOIN FETCH r.volumes v" +

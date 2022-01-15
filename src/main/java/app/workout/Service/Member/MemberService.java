@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -46,8 +47,8 @@ public class MemberService {
      * */
     @Transactional
     public Long join(String email, String password, String name, String nickname){
-        boolean isUsed = memberRepository.findByEmail(email).isPresent();
-        if(isUsed) return null;
+        emailCheck(email);
+        passwordRegex(password);
         String encodePassword = passwordEncoder.encode(password);
         Member member = new Member(email, encodePassword, name, nickname);
         memberRepository.save(member);
@@ -114,6 +115,20 @@ public class MemberService {
 
     public void loginCheck(Long memberId) {
         if (memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
+    }
+
+    private void passwordRegex(String password) {
+        // password Regex 암호의 정규표현식
+        String pattern = "^[a-zA-Z0-9\\d~!@#$%^&*]{10,}$";
+        boolean matches = Pattern.matches(pattern, password);
+        if(!matches) throw new IllegalStateException("비밀번호는 10자리 이상에 특수문자가 포함되어야합니다.");
+    }
+
+    private void emailCheck(String email){
+        // 이메일 여부 체크
+        memberRepository.findByEmail(email).ifPresent(m->{
+            throw new IllegalStateException("이미 존재하는 이메일입니다.");
+        });
     }
 
 }

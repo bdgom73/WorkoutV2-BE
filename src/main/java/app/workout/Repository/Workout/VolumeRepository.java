@@ -16,5 +16,4 @@ public interface VolumeRepository extends JpaRepository<Volume, Long> {
     @Query("SELECT v FROM Volume v JOIN FETCH v.workout w WHERE v.id = :volumeId")
     Optional<Volume> findOne(Long volumeId);
 
-
 }

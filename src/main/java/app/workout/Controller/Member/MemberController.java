@@ -3,10 +3,12 @@ package app.workout.Controller.Member;
 import app.workout.Controller.ReturnType.ReturnTypeV1;
 import app.workout.Entity.Member.Member;
 import app.workout.Service.ArgumentResolver.Login.Login;
+import app.workout.Service.CustomPageRequest;
 import app.workout.Service.Member.MemberDataDto;
 import app.workout.Service.Member.MemberService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
@@ -28,6 +31,7 @@ public class MemberController {
     @PostMapping("/login")
     public ReturnTypeV1<String> loginMember(@RequestBody LoginRequest loginRequest){
         String token = memberService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        log.info("login = [{}]", loginRequest.getEmail());
         return new ReturnTypeV1<>(token);
     }
 
@@ -37,6 +41,7 @@ public class MemberController {
     @PostMapping("/join")
     public ReturnTypeV1<Long> joinMember(@RequestBody JoinRequest joinRequest){
         Long memberId = memberService.join(joinRequest.email,joinRequest.password,joinRequest.name,joinRequest.nickname);
+        log.info("join member = [{}]", memberId);
         return new ReturnTypeV1<>(memberId);
     }
 
@@ -56,9 +61,12 @@ public class MemberController {
     @GetMapping("/members")
     public ReturnTypeV1<List<MemberResponse>> members(
             @RequestParam(name = "page",defaultValue = "0") int page,
-            @RequestParam(name = "size",defaultValue = "10") int size){
+            @RequestParam(name = "size",defaultValue = "10") int size,
+            @RequestParam(name = "sort", defaultValue = "id") String sortString,
+            @RequestParam(name = "direction", defaultValue = "desc") String direction
+    ){
 
-        PageRequest pageRequest = PageRequest.of(page, size);
+        PageRequest pageRequest = CustomPageRequest.getPageRequest(page,size,sortString,direction);
         List<MemberResponse> result = memberService.findAll(pageRequest).stream().map(MemberResponse::new).collect(Collectors.toList());
         return new ReturnTypeV1<>(result);
     }

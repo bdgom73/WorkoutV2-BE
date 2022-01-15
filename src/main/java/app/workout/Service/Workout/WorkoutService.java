@@ -4,11 +4,13 @@ import app.workout.Entity.Workout.Eunm.ExercisePart;
 import app.workout.Entity.Workout.Eunm.ExerciseType;
 import app.workout.Entity.Workout.Workout;
 import app.workout.Repository.Workout.WorkoutRepository;
+import app.workout.Service.FileUpload.FileUpload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class WorkoutService {
 
     private final WorkoutRepository workoutRepository;
+    private final FileUpload fileUpload;
 
     /**
      * 운동 상세정보
@@ -78,5 +81,15 @@ public class WorkoutService {
     @Transactional
     public void deleteWorkout(Long workoutId){
         workoutRepository.deleteById(workoutId);
+    }
+
+    /**
+     * 운동 메인 이미지 변경 및 추가
+     * */
+    @Transactional
+    public void changeWorkoutImage(Long workoutId, MultipartFile file){
+        String workoutImageURL = fileUpload.saveWorkoutImage(file);
+        Workout workout = findOne(workoutId);
+        workout.changeImage(workoutImageURL);
     }
 }

@@ -28,6 +28,8 @@ public class Workout extends BaseEntity {
 
     public Workout(String name, ExercisePart part, ExerciseType type) {
         this.name = name;
+        this.part = part;
+        this.type = type;
     }
 
     public void changeWorkout(String name, ExercisePart part, ExerciseType type){

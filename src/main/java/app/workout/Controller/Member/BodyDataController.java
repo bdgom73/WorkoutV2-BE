@@ -2,11 +2,13 @@ package app.workout.Controller.Member;
 
 import app.workout.Controller.ReturnType.ReturnTypeV1;
 import app.workout.Entity.Member.BodyData;
+import app.workout.Service.ArgumentResolver.Login.Login;
 import app.workout.Service.Member.BodyDataService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -21,7 +23,6 @@ import java.util.stream.Collectors;
 public class BodyDataController {
 
     private final BodyDataService bodyDataService;
-    private final EntityManager em;
 
     /**
      * 페이징 바디데이터 리턴
@@ -31,7 +32,7 @@ public class BodyDataController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size
     ){
-        PageRequest pageRequest = PageRequest.of(page, size);
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createDate").descending());
         List<BodyDataResponse> result = bodyDataService.findAll(pageRequest).stream()
                 .map(BodyDataResponse::new).collect(Collectors.toList());
         return new ReturnTypeV1<>(result);
@@ -50,9 +51,8 @@ public class BodyDataController {
      * 특정 유저의 가장 최근의 바디데이터값 리턴
      * */
     @GetMapping("/body-data/latest")
-    public ReturnTypeV1<BodyDataResponse> OneBodyData(){
-        //TODO MEMBER 가져오기
-        BodyData bodyData = bodyDataService.findBodyDataByMember(1L);
+    public ReturnTypeV1<BodyDataResponse> OneBodyData(@Login Long memberId){
+        BodyData bodyData = bodyDataService.findBodyDataByMember(memberId);
         return new ReturnTypeV1<>(new BodyDataResponse(bodyData));
     }
 
@@ -60,9 +60,8 @@ public class BodyDataController {
      * 데이터생성
      * */
     @PostMapping("/body-data")
-    public ReturnTypeV1<BodyDataResponse> createBodyData(@RequestBody BodyDataRequest bodyDataRequest){
-        //TODO MEMBER 가져오기
-        bodyDataService.createBodyData(1L,bodyDataRequest.getAge(), bodyDataRequest.getHeight(), bodyDataRequest.getWeight());
+    public ReturnTypeV1<BodyDataResponse> createBodyData(@RequestBody BodyDataRequest bodyDataRequest, @Login Long memberId){
+        bodyDataService.createBodyData(memberId,bodyDataRequest.getAge(), bodyDataRequest.getHeight(), bodyDataRequest.getWeight());
         BodyData bodyData = bodyDataService.findBodyDataByMember(1L);
         return new ReturnTypeV1<>(new BodyDataResponse(bodyData));
     }

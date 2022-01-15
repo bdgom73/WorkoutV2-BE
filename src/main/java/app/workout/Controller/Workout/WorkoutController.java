@@ -4,6 +4,7 @@ import app.workout.Controller.ReturnType.ReturnTypeV1;
 import app.workout.Entity.Workout.Eunm.ExercisePart;
 import app.workout.Entity.Workout.Eunm.ExerciseType;
 import app.workout.Entity.Workout.Workout;
+import app.workout.Service.CustomPageRequest;
 import app.workout.Service.Workout.WorkoutService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,11 @@ public class WorkoutController {
     @GetMapping("/workouts")
     public ReturnTypeV1<List<WorkoutResponse>> workouts(
             @RequestParam(name="page",defaultValue = "0") int page,
-            @RequestParam(name="size",defaultValue = "10") int size
+            @RequestParam(name="size",defaultValue = "10") int size,
+            @RequestParam(name = "sort", defaultValue = "createDate") String sortString,
+            @RequestParam(name = "direction", defaultValue = "aes") String direction
     ){
-        PageRequest pageRequest = PageRequest.of(page, size);
+        PageRequest pageRequest = CustomPageRequest.getPageRequest(page, size, sortString, direction);
         List<WorkoutResponse> result = workoutService.findAll(pageRequest).stream().map(w ->
                 new WorkoutResponse(w.getId(), w.getName(), w.getImageUrl(), w.getPart(), w.getType(), w.getExplanation())
         ).collect(Collectors.toList());

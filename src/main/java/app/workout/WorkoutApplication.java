@@ -36,8 +36,8 @@ public class WorkoutApplication {
 
 	@Bean
 	public void initData(){
-		Long join = memberService.join("testA", "test!", "TesterA", "testerA");
-		memberService.join("testB","test!","testerB","testerB");
+		Long join = memberService.join("testA", "testtesttest!", "TesterA", "testerA");
+		memberService.join("testB","testtesttest!","testerB","testerB");
 
 		Optional<Member> byId = memberRepository.findById(join);
 

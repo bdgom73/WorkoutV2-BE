@@ -1,9 +1,11 @@
 package app.workout.Service.Routine;
 
+import app.workout.Entity.Workout.Eunm.ExercisePart;
 import app.workout.Entity.Workout.Routine;
 import app.workout.Entity.Workout.Volume;
 import app.workout.Entity.Workout.Workout;
 import app.workout.Repository.Workout.WorkoutRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -100,22 +102,36 @@ class RoutineServiceTest {
         Volume v1 = Volume.createVolume(20, 20, workoutA);
         Volume v2 = Volume.createVolume(20, 20, workoutB);
         Volume v3 = Volume.createVolume(20, 20, workoutC);
+        Volume v4 = Volume.createVolume(20, 20, workoutA);
+        Volume v5 = Volume.createVolume(20, 20, workoutB);
 
-        Long rid = routineService.createRoutine(1L, "testA", null, Boolean.FALSE, v1, v2, v3);
+        Long rid = routineService.createRoutine(1L, "testA", null, Boolean.FALSE, v1, v2, v3,v4,v5);
 
         em.flush();
         em.clear();
 
         //when
         Routine one = routineService.findRoutine(rid);
-        List<Volume> volumes = one.getVolumes();
-        for (Volume volume : volumes) {
-            System.out.println("volume = " + volume.getId());
-            System.out.println("volume = " + volume.getWorkout().getName());
-        }
         //then
         assertEquals(one.getMember().getId(), 1);
     }
 
+    @Test
+    @Rollback(true)
+    void copyRoutineTest(){
+        //given
+        //when
+        //then
+        Assertions.assertThrows(IllegalStateException.class , ()->{
+            routineService.copyRoutine(1L, 2L);
+        });
+    }
+
+    @Test
+    void recommendRoutineTest(){
+        //when
+        routineService.recommend(6L,1L);
+        //then
+    }
 
 }
