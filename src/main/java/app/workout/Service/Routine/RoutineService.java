@@ -32,6 +32,8 @@ public class RoutineService {
     private final WorkoutService workoutService;
     private final RecommendationRepository recommendationRepository;
 
+
+
     /**
      * 루틴 검색
      * */
@@ -46,6 +48,11 @@ public class RoutineService {
             throw new IllegalStateException("루틴 정보를 찾을 수 없습니다.");
         });
     }
+
+    public List<Routine> findRoutineOrderByRecommend(int page , int size, String direction){
+        return routineRepository.findShareRoutineRecommend(page, size, direction);
+    }
+
     /**
      * 루틴(루틴, 유저) 검색
      * */
@@ -147,6 +154,7 @@ public class RoutineService {
         return routine.getId();
     }
 
+    // 추천
     @Transactional
     public void recommend(Long routineId, Long memberId){
         recommendationRepository.findByRoutineAndMember(routineId, memberId).ifPresent(r->{
@@ -163,6 +171,10 @@ public class RoutineService {
             throw new IllegalStateException("추천 기록이 없습니다");
         });
         recommendationRepository.delete(recommendation);
+    }
+
+    public int countRecommend(Long routineId){
+        return recommendationRepository.countByRoutine(routineId);
     }
 
     // SEARCH

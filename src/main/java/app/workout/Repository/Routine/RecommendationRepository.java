@@ -16,4 +16,8 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
             " WHERE r.routine.id = :routineId AND" +
             " r.member.id = :memberId")
     Optional<Recommendation> findByRoutineAndMember(@Param("routineId") Long routineId, @Param("memberId") Long memberId);
+
+    @Query("SELECT count(r) FROM Recommendation r" +
+            " WHERE r.routine.id = :routineId")
+    int countByRoutine(@Param("routineId") Long routineId);
 }

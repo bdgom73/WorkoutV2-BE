@@ -14,7 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static app.workout.Service.CustomPageRequest.getPageRequest;
@@ -35,9 +37,18 @@ public class RoutineController {
             @RequestParam(name = "sort", defaultValue = "createDate") String sortString,
             @RequestParam(name = "direction", defaultValue = "aes") String direction
     ){
-        PageRequest pageRequest = getPageRequest(page, size, sortString, direction);
-        List<RoutineResponse> result = routineService.findAll(pageRequest).stream()
-                .map(RoutineResponse::new).collect(Collectors.toList());
+        List<RoutineResponse> result;
+        if(Objects.equals(sortString, "recommend")){
+            result = routineService.findRoutineOrderByRecommend(page, size, direction)
+                    .stream()
+                    .map(RoutineResponse::new)
+                    .collect(Collectors.toList());
+        }else{
+            PageRequest pageRequest = getPageRequest(page, size, sortString, direction);
+            result = routineService.findAll(pageRequest).stream()
+                    .map(RoutineResponse::new).collect(Collectors.toList());
+        }
+
         return new ReturnTypeV1<>(result);
     }
 

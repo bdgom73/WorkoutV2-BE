@@ -134,4 +134,27 @@ class RoutineServiceTest {
         //then
     }
 
+    @Test
+    void countRecommendTest(){
+        //given
+        routineService.recommend(6L, 1L);
+        routineService.recommend(6L, 2L);
+        //when
+        int count = routineService.countRecommend(6L);
+        //then
+        assertEquals(count, 2);
+    }
+
+    @Test
+    void cancelRecommendTest(){
+        //given
+        routineService.recommend(6L, 1L);
+        routineService.recommend(6L, 2L);
+        //when
+        routineService.recommendCancel(6L, 1L);
+        int count = routineService.countRecommend(6L);
+        //then
+        assertEquals(count, 1);
+    }
+
 }

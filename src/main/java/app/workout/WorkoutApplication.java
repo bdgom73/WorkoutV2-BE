@@ -52,13 +52,13 @@ public class WorkoutApplication {
 
 		Volume volume = Volume.createVolume(20, 5, workoutA);
 		Volume volume1 = Volume.createVolume(20, 5, workoutB);
-		Routine testA = Routine.createRoutine("testA", null, false, byId.get() , volume,volume1);
+		Routine testA = Routine.createRoutine("testA", null, true, byId.get() , volume,volume1);
 		routineRepository.save(testA);
 
 		Volume volume3 = Volume.createVolume(50, 3, workoutA);
 		Volume volume4 = Volume.createVolume(50, 3, workoutB);
 
-		Routine testB = Routine.createRoutine("testB", null, false, byId.get() , volume3,volume4);
+		Routine testB = Routine.createRoutine("testB", null, true, byId.get() , volume3,volume4);
 		routineRepository.save(testB);
 	}
 

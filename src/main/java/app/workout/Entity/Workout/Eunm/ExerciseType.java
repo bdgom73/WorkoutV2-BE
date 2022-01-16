@@ -9,7 +9,7 @@ public enum ExerciseType {
         this.value = value;
     }
 
-    public String getValue(){
+    public String toKorean(){
         return value;
     }
 }

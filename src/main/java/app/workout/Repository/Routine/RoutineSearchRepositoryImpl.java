@@ -8,7 +8,6 @@ import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -96,6 +95,22 @@ public class RoutineSearchRepositoryImpl implements RoutineSearchRepository{
 
         return jpaQuery.fetch();
     }
+
+    @Override
+    public List<Routine> findShareRoutineRecommend(int page, int size, String direction) {
+        return em.createNativeQuery("SELECT r.* FROM Routine as r" +
+                                " INNER JOIN Member as m " +
+                                " ON m.member_id = r.member_id" +
+                                " WHERE r.share= :share" +
+                                " ORDER BY ( SELECT count(rec.*) FROM recommendation as rec WHERE rec.routine_id = r.routine_id) :direction",
+                        Routine.class)
+                .setParameter("share", Boolean.TRUE)
+                .setParameter("direction", direction == "aes" ? "aes" : "desc")
+                .setMaxResults(size)
+                .setFirstResult(page)
+                .getResultList();
+    }
+
     @Override
     public List<Routine> findShareRoutine() {
         query = new JPAQueryFactory(em);
@@ -109,4 +124,5 @@ public class RoutineSearchRepositoryImpl implements RoutineSearchRepository{
                 .fetch();
 
     }
+
 }
