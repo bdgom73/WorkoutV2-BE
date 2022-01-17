@@ -66,8 +66,12 @@ public class RoutineController {
     }
 
     @PutMapping("/routines/{routineId}")
-    public ReturnTypeV1<Long> editRoutine(@PathVariable("routineId") Long routineId, @RequestBody EditRoutineRequest routineRequest){
-        Long rId = routineService.editRoutine(routineId, routineRequest.getTitle(), routineRequest.getPart());
+    public ReturnTypeV1<Long> editRoutine(
+            @PathVariable("routineId") Long routineId,
+            @RequestBody EditRoutineRequest routineRequest,
+            @Login Long memberId
+    ){
+        Long rId = routineService.editRoutine(routineId, memberId, routineRequest.getTitle(), routineRequest.getPart());
         return new ReturnTypeV1<>(rId);
     }
 

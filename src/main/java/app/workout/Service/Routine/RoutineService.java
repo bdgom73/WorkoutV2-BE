@@ -120,10 +120,13 @@ public class RoutineService {
      * 루틴의 제목과 부위 수정
      * */
     @Transactional
-    public Long editRoutine(Long routineId, String title, ExercisePart part){
-        Routine routine = routineRepository.findById(routineId).orElseThrow(() -> {
+    public Long editRoutine(Long routineId, Long memberId, String title, ExercisePart part){
+        Routine routine = routineRepository.findMemberFetch(routineId).orElseThrow(() -> {
             throw new IllegalStateException("찾을 수 없는 루틴입니다");
         });
+        if(!Objects.equals(routine.getMember().getId(), memberId)){
+            throw new IllegalStateException("수정 권한이 없습니다");
+        }
         routine.changeRoutine(title,part);
         return routine.getId();
     }

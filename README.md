@@ -1,5 +1,5 @@
-# [Backend] Workout Application
-
+# [Backend] Workout Application V2
+### 수정 전 Backend -> [V1 이동](https://github.com/bdgom73/workoutApp)
 ### ⚫ 목차
 1. [회원관리](#1-회원관리)
 2. [신체데이터관리](#2-신체데이터관리)
@@ -23,15 +23,15 @@ POST /api/login
 
 ```JSON
 {
-    "email" : "user email",
-    "password" : "user password"
+    "email" : "유저 이메일",
+    "password" : "유저 비밀번호"
 }
 ```
 
 * RETURN
 ```JSON
 {
-    "data" : "TOKEN VALUE"
+    "data" : "토큰"
 }
 ```
 
@@ -52,18 +52,18 @@ POST /api/join
 
 ```JSON
 {
-    "email" : "email",
-    "password" : "valid password",
-    "password2" : "valid password check",
-    "name" : "name",
-    "nickname" : "nickname"
+    "email" : "이메일",
+    "password" : "비밀번호",
+    "password2" : "비밀번호 확인",
+    "name" : "이름",
+    "nickname" : "별명"
 }
 ```
 
 * RETURN
 ```JSON
 {
-    "data" : "USER ID"
+    "data" : "유저 고유 아이디"
 }
 ```
 
@@ -82,14 +82,14 @@ Authorization : TOKEN
 ```JSON
 {
     "data" : {
-        "memberId" : "memberId",
-        "email": "email",
-        "name" : "name",
-        "nickname" : "nickname",
-        "bodyDataId" : "bodyDataId",
-        "age" : 20,
-        "height" : 172.3,
-        "weight" : 62.3
+        "memberId" : "유저 고유 아이디",
+        "email": "이메일",
+        "name" : "이름",
+        "nickname" : "별명",
+        "bodyDataId" : "신체 데이터 고유 아이디",
+        "age" : "나이",
+        "height" : "키",
+        "weight" : "몸무게"
     }
 }
 ```
@@ -117,14 +117,14 @@ GET /api/members
 {
     "data" : [
         {
-            "memberId" : "memberId",
-            "email": "email",
-            "name" : "name",
-            "nickname" : "nickname",
-            "bodyDataId" : "bodyDataId",
-            "age" : 20,
-            "height" : 172.3,
-            "weight" : 62.3
+            "memberId" : "유저 고유 아이디",
+            "email": "이메일",
+            "name" : "이름",
+            "nickname" : "별명",
+            "bodyDataId" : "신체 데이터 고유 아이디",
+            "age" : "나이",
+            "height" : "키",
+            "weight" : "몸무게"
         },
         "more..."
     ]
@@ -147,14 +147,14 @@ GET /api/members/{memberId}
 ```JSON
 {
     "data" : {
-        "memberId" : "memberId",
-        "email": "email",
-        "name" : "name",
-        "nickname" : "nickname",
-        "bodyDataId" : "bodyDataId",
-        "age" : 20,
-        "height" : 172.3,
-        "weight" : 62.3
+        "memberId" : "유저 고유 아이디",
+        "email": "이메일",
+        "name" : "이름",
+        "nickname" : "별명",
+        "bodyDataId" : "신체 데이터 고유 아이디",
+        "age" : "나이",
+        "height" : "키",
+        "weight" : "몸무게"
     }
 }
 ```
@@ -187,14 +187,14 @@ Authorization : TOKEN
 ```JSON
 {
     "data" : {
-        "memberId" : "memberId",
-        "email": "email",
-        "name" : "name",
-        "nickname" : "nickname",
-        "bodyDataId" : "bodyDataId",
-        "age" : 20,
-        "height" : 172.3,
-        "weight" : 62.3
+      "memberId" : "유저 고유 아이디",
+      "email": "이메일",
+      "name" : "이름",
+      "nickname" : "별명",
+      "bodyDataId" : "신체 데이터 고유 아이디",
+      "age" : "나이",
+      "height" : "키",
+      "weight" : "몸무게"
     }
 }
 ```
@@ -224,14 +224,14 @@ mulipart/form-data {
 ```JSON
 {
     "data" : {
-        "memberId" : "memberId",
-        "email": "email",
-        "name" : "name",
-        "nickname" : "nickname",
-        "bodyDataId" : "bodyDataId",
-        "age" : 20,
-        "height" : 172.3,
-        "weight" : 62.3
+      "memberId" : "유저 고유 아이디",
+      "email": "이메일",
+      "name" : "이름",
+      "nickname" : "별명",
+      "bodyDataId" : "신체 데이터 고유 아이디",
+      "age" : "나이",
+      "height" : "키",
+      "weight" : "몸무게"
     }
 }
 ```
@@ -261,10 +261,10 @@ Authorization : TOKEN
 {
     "data" : [
         {
-            "bodyDataId" : "bodyDataId",
-            "age" : 20,
-            "height" : 172.3,
-            "weight" : 62.3
+            "bodyDataId" : "신체 데이터 고유 아이디",
+            "age" : "나이",
+            "height" : "키",
+            "weight" : "몸무게"
         },
         "more..."
     ]
@@ -290,10 +290,10 @@ Authorization : TOKEN
 ```JSON
 {
     "data" : {
-        "bodyDataId" : "bodyDataId",
-        "age" : 20,
-        "height" : 172.3,
-        "weight" : 62.3
+      "bodyDataId" : "신체 데이터 고유 아이디",
+      "age" : "나이",
+      "height" : "키",
+      "weight" : "몸무게"
     }
 }
 ```
@@ -312,10 +312,10 @@ Authorization : TOKEN
 ```JSON
 {
     "data" : {
-        "bodyDataId" : "bodyDataId",
-        "age" : 20,
-        "height" : 172.3,
-        "weight" : 62.3
+      "bodyDataId" : "신체 데이터 고유 아이디",
+      "age" : "나이",
+      "height" : "키",
+      "weight" : "몸무게"
     }
 }
 ```
@@ -338,9 +338,9 @@ Authorization : TOKEN
 |weight|int|true|유저의 몸무게|
 ```JSON
 {
-    "age" : "user age",
-    "height" : "user height",
-    "weight" : "user weight"
+    "age" : "나이",
+    "height" : "키",
+    "weight" : "몸무게"
 }
 ```
 
@@ -348,10 +348,10 @@ Authorization : TOKEN
 ```JSON
 {
     "data" : {
-        "bodyDataId" : "bodyDataId",
-        "age" : 20,
-        "height" : 172.3,
-        "weight" : 62.3
+      "bodyDataId" : "신체 데이터 고유 아이디",
+      "age" : "나이",
+      "height" : "키",
+      "weight" : "몸무게"
     }
 }
 ```
@@ -375,9 +375,9 @@ Authorization : TOKEN
 |weight|int|true|수정할 유저의 몸무게|
 ```JSON
 {
-    "age" : "user age",
-    "height" : "user height",
-    "weight" : "user weight"
+  "age" : "나이",
+  "height" : "키",
+  "weight" : "몸무게"
 }
 ```
 
@@ -385,10 +385,10 @@ Authorization : TOKEN
 ```JSON
 {
     "data" : {
-        "bodyDataId" : "bodyDataId",
-        "age" : 20,
-        "height" : 172.3,
-        "weight" : 62.3
+      "bodyDataId" : "신체 데이터 고유 아이디",
+      "age" : "나이",
+      "height" : "키",
+      "weight" : "몸무게"
     }
 }
 ```
@@ -539,5 +539,328 @@ DELETE /api/workouts/{workoutId}
 |workoutId|Long|true|운동 고유 아이디|
 
 ## 4. 루틴관리
+### 4-1 루틴 리스트
+* URL
+```TEXT
+GET /api/routines
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|기본값|설명|
+|-----|---|---|---|-----|
+|page|int|false|0|현재 페이지 입니다.|
+|size|int|false|10|한 페이지당 가져올 데이터 개수입니다.|
+|sort|String|false|createDate|정렬 기준 값입니다.|
+|direction|String|false|aes|오름차순, 내림차순 (aes/desc)|
+```TEXT
+?page=0&size=10&sort=createDate&direction=aes
+```
+* RETURN
+```JSON
+{
+    "data" : [
+        {
+            "routineId" : "루틴 고유 아이디",
+            "title" : "루틴제목",
+            "part" : "운동부위",
+            "share" : "공유여부",
+            "originalAuthor" : "루틴 제작자",
+            "memberId" : "루틴 사용 유저 고유 아이디",
+            "memberNickname" : "유저 별명"
+        },
+        "more..."
+    ]
+}
+```
+### 4-2 루틴 상세보기
+* URL
+```TEXT
+GET /api/routines/{routineId}
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---
+|routineId|Long|true|루틴 고유 아이디|
+* RETURN
+```JSON
+{
+    "data" : {
+        "routineId" : "루틴 고유 아이디",
+        "title" : "루틴제목",
+        "part" : "운동부위",
+        "share" : "공유여부",
+        "originalAuthor" : "루틴 제작자",
+        "memberId" : "루틴 사용 유저 고유 아이디",
+        "memberNickname" : "유저 별명"
+    }
+        
+    
+}
+```
+### 4-3 루틴 추가
+* URL
+```TEXT
+POST /api/routines
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|title|String|true|루틴의 제목|
+|part|String|true|루틴의 주요 운동부위|
+|share|boolean|true|루틴 공유 여부|
+|**[volumes](#Volumes)**|List|true|볼륨값 리스트|
+
+#### Volumes
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|num|int|true|운동의 횟수|
+|sets|int|true|운동의 세트수|
+|workoutId|Long|true|운동의 고유아이디|
+
+* RETURN
+```JSON
+{
+    "data" : "루틴의 고유 아이디"
+}
+```
+### 4-4 루틴 수정
+* URL
+```TEXT
+PUT /api/routines/{routineId}
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|routineId|String|true|루틴의 고유 아이디|
+|title|String|true|루틴의 제목|
+|part|boolean|true|루틴 주요 운동부위|
+
+* RETURN
+```JSON
+{
+    "data" : "루틴의 고유 아이디"
+}
+```
+### 4-5 루틴 삭제
+* URL
+```TEXT
+DELETE /api/routines/{routineId}
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|routineId|String|true|루틴의 고유 아이디|
+
+### 4-6 공유 루틴 리스트
+* URL
+```TEXT
+GET /api/routines/share
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|기본값|설명|
+|-----|---|---|---|-----|
+|page|int|false|0|현재 페이지 입니다.|
+|size|int|false|10|한 페이지당 가져올 데이터 개수입니다.|
+|sort|String|false|createDate|정렬 기준 값입니다.|
+|direction|String|false|AES|오름차순, 내림차순 (AES/DESC)|
+```TEXT
+?page=0&size=10&sort=createDate&direction=aes
+```
+
+* RETURN
+```JSON
+{
+    "data" : [
+        {
+          "routineId" : "루틴 고유 아이디",
+          "title" : "루틴제목",
+          "part" : "운동부위",
+          "share" : true,
+          "originalAuthor" : "루틴 제작자",
+          "memberId" : "루틴 사용 유저 고유 아이디",
+          "memberNickname" : "유저 별명"
+        },
+        "more..."
+    ]
+}
+```
+### 4-7 루틴 복사
+* URL
+```TEXT
+POST /api/routines/{routineId}/copy
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|routineId|String|true|루틴의 고유 아이디|
+
+* RETURN
+```JSON
+{
+    "data" : "루틴의 고유 아이디"
+}
+```
+### 4-8 루틴 추천
+* URL
+```TEXT
+POST /api/routines/{routineId}/recommend
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|routineId|String|true|루틴의 고유 아이디|
+
+### 4-9 루틴 추천 취소
+* URL
+```TEXT
+DELETE /api/routines/{routineId}/recommend
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|routineId|String|true|루틴의 고유 아이디|
 
 ## 5. 볼륨관리
+### 5-1 해당 루틴의 볼륨 가져오기
+* URL
+```TEXT
+GET /api/volumes
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|routineId|Long|true|루틴의 고유 아이디|
+```
+?routineId=1
+```
+* RETURN
+```JSON
+{
+  "data": [
+      {
+        "volumeId" : "볼륨 고유 아이디",
+        "num" : "운동 횟수",
+        "sets" : "운동 세트수",
+        "workoutId" : "운동 고유 아이디",
+        "workoutName" : "운동 이름",
+        "workoutImageUrl" : "운동 이미지",
+        "workoutPart" : "운동 부위",
+        "workoutType" : "유산소 or 무산소",
+        "routineId" : "루틴 고유 아이디"
+      },
+      "more..."
+    ]
+}
+```
+### 5-2 볼륨 상세보기
+* URL
+```TEXT
+GET /api/volumes/{volumeId}
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|volumeId|Long|true|볼륨의 고유 아이디|
+
+* RETURN
+```JSON
+{
+  "data": {
+    "volumeId" : "볼륨 고유 아이디",
+    "num" : "운동 횟수",
+    "sets" : "운동 세트수",
+    "workoutId" : "운동 고유 아이디",
+    "workoutName" : "운동 이름",
+    "workoutImageUrl" : "운동 이미지",
+    "workoutPart" : "운동 부위",
+    "workoutType" : "유산소 or 무산소",
+    "routineId" : "루틴 고유 아이디"
+  }
+      
+    
+}
+```
+### 5-3 볼륨 추가
+* URL
+```TEXT
+POST /api/volumes
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|routineId|Long|true|루틴의 고유 아이디|
+|workoutId|Long|true|운동의 고유 아이디|
+|num|int|true|운동의 횟수|
+|sets|int|true|운동의 세트수|
+### 5-4 볼륨 수정
+* URL
+```TEXT
+PUT /api/volumes/{volumeId}
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|volumeId|Long|true|볼륨의 고유 아이디|
+|workoutId|Long|true|운동의 고유 아이디|
+|num|int|true|운동의 횟수|
+|sets|int|true|운동의 세트수|
+
+* RETURN
+```JSON
+{
+  "data": "볼륨의 고유 아이디"
+}
+```
+### 5-5 볼륨 삭제
+* URL
+```TEXT
+DELETE /api/volumes/{volumeId}
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|volumeId|Long|true|볼륨의 고유 아이디|
