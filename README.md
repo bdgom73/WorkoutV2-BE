@@ -74,7 +74,7 @@ GET /api/member
 ```
 * Request Headers
 
-```http
+```TEXT
 Authorization : TOKEN
 ```
 
@@ -166,7 +166,7 @@ PUT /api/members/{memberId}
 ```
 * Request Headers
 
-```http
+```TEXT
 Authorization : TOKEN
 ```
 * PARAMETER
@@ -206,7 +206,7 @@ POST /api/members/avatar
 ```
 * Request Headers
 
-```http
+```TEXT
 Authorization : TOKEN
 ```
 * PARAMETER
@@ -243,7 +243,7 @@ GET /api/body-data
 ```
 <!-- * Request Headers
 
-```http
+```TEXT
 Authorization : TOKEN
 ``` -->
 * PARAMETER
@@ -277,7 +277,7 @@ GET /api/body-data/{bodyDataId}
 ```
 <!-- * Request Headers
 
-```http
+```TEXT
 Authorization : TOKEN
 ``` -->
 * PARAMETER
@@ -304,7 +304,7 @@ GET /api/body-data/latest
 ```
 * Request Headers
 
-```http
+```TEXT
 Authorization : TOKEN
 ```
 
@@ -326,7 +326,7 @@ POST /api/body-data
 ```
 * Request Headers
 
-```http
+```TEXT
 Authorization : TOKEN
 ```
 * PARAMETER
@@ -362,7 +362,7 @@ PUT /api/body-data/{bodyDataId}
 ```
 <!-- * Request Headers
 
-```http
+```TEXT
 Authorization : TOKEN
 ``` -->
 * PARAMETER
@@ -399,7 +399,7 @@ DELETE /api/body-data/{bodyDataId}
 ```
 * Request Headers
 
-```http
+```TEXT
 Authorization : TOKEN
 ```
 * PARAMETER
