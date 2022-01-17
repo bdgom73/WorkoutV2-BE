@@ -89,7 +89,7 @@ Authorization : TOKEN
         "bodyDataId" : "bodyDataId",
         "age" : 20,
         "height" : 172.3,
-        "weight : 62.3
+        "weight" : 62.3
     }
 }
 ```
@@ -126,9 +126,7 @@ GET /api/members
             "height" : 172.3,
             "weight" : 62.3
         },
-        .
-        .
-        .
+        "more..."
     ]
 }
 ```
@@ -268,9 +266,7 @@ Authorization : TOKEN
             "height" : 172.3,
             "weight" : 62.3
         },
-        .
-        .
-        .
+        "more..."
     ]
 }
 ```
@@ -440,11 +436,9 @@ GET /api/workouts
             "imageUrl" : "이미지 url",
             "part" : "운동부위",
             "type" : "무산소 / 유산소",
-            "explanation" : "설명",
+            "explanation" : "설명"
         },
-        .
-        .
-        .
+        "more..."
     ]
 }
 ```
@@ -468,7 +462,7 @@ GET /api/workouts/{workoutId}
         "imageUrl" : "이미지 url",
         "part" : "운동부위",
         "type" : "무산소 or 유산소",
-        "explanation" : "설명",
+        "explanation" : "설명"
     }
 }
 ```
@@ -529,7 +523,7 @@ PUT /api/workouts/{workoutId}
         "imageUrl" : "이미지 url",
         "part" : "운동부위",
         "type" : "무산소 or 유산소",
-        "explanation" : "설명",
+        "explanation" : "설명"
     }
 }
 ```
