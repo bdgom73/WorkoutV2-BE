@@ -26,7 +26,7 @@ public class WorkoutController {
     public ReturnTypeV1<List<WorkoutResponse>> workouts(
             @RequestParam(name="page",defaultValue = "0") int page,
             @RequestParam(name="size",defaultValue = "10") int size,
-            @RequestParam(name = "sort", defaultValue = "createDate") String sortString,
+            @RequestParam(name = "sort", defaultValue = "id") String sortString,
             @RequestParam(name = "direction", defaultValue = "aes") String direction
     ){
         PageRequest pageRequest = CustomPageRequest.getPageRequest(page, size, sortString, direction);
@@ -37,9 +37,9 @@ public class WorkoutController {
     }
 
     @GetMapping("/workouts/{workoutId}")
-    public ReturnTypeV1<EditWorkoutResponse> getWorkout(@PathVariable("workoutId") Long workoutId){
+    public ReturnTypeV1<WorkoutResponse> getWorkout(@PathVariable("workoutId") Long workoutId){
         Workout workout = workoutService.findOne(workoutId);
-        return new ReturnTypeV1<>(new EditWorkoutResponse(workout.getId(), workout.getName(), workout.getPart(), workout.getType(), workout.getExplanation()));
+        return new ReturnTypeV1<>(new WorkoutResponse(workout.getId(), workout.getName(),workout.getImageUrl() ,workout.getPart(), workout.getType(), workout.getExplanation()));
     }
 
     @PostMapping("/workouts")
@@ -51,7 +51,7 @@ public class WorkoutController {
     @PutMapping("/workouts/{workoutId}")
     public ReturnTypeV1<EditWorkoutResponse> editWorkout(@PathVariable("workoutId") Long workoutId , @RequestBody EditWorkoutRequest workoutRequest){
         Workout workout = workoutService.editWorkout(workoutId, workoutRequest.getName(), workoutRequest.getPart(), workoutRequest.getType(), workoutRequest.getExplanation());
-        return new ReturnTypeV1<>(new EditWorkoutResponse(workout.getId(), workout.getName(), workout.getPart(), workout.getType(), workout.getExplanation()));
+        return new ReturnTypeV1<>(new EditWorkoutResponse(workout.getId(), workout.getName(), workout.getImageUrl(), workout.getPart(), workout.getType(), workout.getExplanation()));
     }
 
     @DeleteMapping("/workouts/{workoutId}")
@@ -82,13 +82,15 @@ public class WorkoutController {
     private static class EditWorkoutResponse{
         private Long workoutId;
         private String name;
+        private String imageUrl;
         private ExercisePart part;
         private ExerciseType type;
         private String explanation;
 
-        public EditWorkoutResponse(Long workoutId, String name, ExercisePart part, ExerciseType type, String explanation) {
+        public EditWorkoutResponse(Long workoutId, String name, String imageUrl, ExercisePart part, ExerciseType type, String explanation) {
             this.workoutId = workoutId;
             this.name = name;
+            this.imageUrl = imageUrl;
             this.part = part;
             this.type = type;
             this.explanation = explanation;

@@ -17,4 +17,7 @@ public interface BodyDataRepository extends JpaRepository<BodyData, Long> {
     List<BodyData> findByMember(@Param("memberId") Long memberId, Pageable pageable);
     @Query("SELECT b FROM BodyData b WHERE b.member.id=:memberId ORDER BY b.id DESC")
     List<BodyData> findByMember(@Param("memberId") Long memberId);
+
+    @Query("SELECT b FROM BodyData b JOIN FETCH b.member m WHERE b.id = :bodyDataId")
+    Optional<BodyData> findByIdJoinMember(@Param("bodyDataId") Long bodyDataId);
 }

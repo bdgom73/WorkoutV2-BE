@@ -79,6 +79,14 @@ public class BodyDataController {
         return new ReturnTypeV1<>(new BodyDataResponse(bodyData));
     }
 
+    @DeleteMapping("/body-data/{bodyDataId}")
+    public void deleteBodyData(
+            @PathVariable("bodyDataId") Long bodyDataId,
+            @Login Long memberId
+    ){
+        bodyDataService.deleteBodyData(bodyDataId, memberId);
+    }
+
     @Data
     private static class BodyDataRequest{
         @NotBlank

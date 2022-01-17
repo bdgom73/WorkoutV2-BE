@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,8 +80,15 @@ public class BodyDataService {
      * 바디 데이터 삭제
      * */
     @Transactional
+    public void deleteBodyData(Long bodyDataId, Long memberId){
+        BodyData bodyData = bodyDataRepository.findByIdJoinMember(bodyDataId).orElseThrow();
+        if(!Objects.equals(bodyData.getMember().getId(), memberId)){
+            throw new IllegalStateException("삭제 권한이 없습니다");
+        }
+        bodyDataRepository.deleteById(bodyDataId);
+    }
+    @Transactional
     public void deleteBodyData(Long bodyDataId){
-//        bodyDataRepository.findById(bodyDataId).orElseThrow();
         bodyDataRepository.deleteById(bodyDataId);
     }
 
