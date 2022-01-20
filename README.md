@@ -1015,7 +1015,6 @@ Authorization : TOKEN
 |-----|---|---|---|
 |scheduleId|Long|true|일정 고유 아이디|
 
-```
 ## 7. 예외
 ### 예외 스펙
 
