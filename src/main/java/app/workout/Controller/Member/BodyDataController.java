@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -104,12 +105,16 @@ public class BodyDataController {
         private int age;
         private double height;
         private double weight;
+        private LocalDateTime createdDate;
+        private LocalDateTime modifiedDate;
 
         public BodyDataResponse(BodyData bodyData) {
             this.bodyDateId = bodyData.getId();
             this.age = bodyData.getAge();
             this.height = bodyData.getHeight();
             this.weight = bodyData.getWeight();
+            this.createdDate = bodyData.getCreatedDate();
+            this.modifiedDate = bodyData.getModifiedDate();
         }
     }
 

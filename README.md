@@ -6,7 +6,8 @@
 3. [운동관리](#3-운동관리)
 4. [루틴관리](#4-루틴관리)
 5. [볼륨관리](#5-볼륨관리)
-6. [예외](#6-예외)
+6. [일정관리](#6-일정관리)
+7. [예외](#7-예외)
 
 ## 1. 회원관리
 ### 1-1 로그인
@@ -865,7 +866,157 @@ DELETE /api/volumes/{volumeId}
 |-----|---|---|---|
 |volumeId|Long|true|볼륨의 고유 아이디|
 
-## 6. 예외
+## 6. 일정관리
+### 6-1 일정 (범위) 가져오기
+* URL
+```TEXT
+GET /api/schedule
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|start|String|true|범위 시작일 <br> pattern = "yyyy-MM-dd"|
+|end|String|true|범위 종료일 <br> pattern = "yyyy-MM-dd"|
+```TEXT
+?start=2022-01-01&end=2021-01-31
+```
+
+* RETURN
+```JSON
+{
+    "data" :[
+        {
+            "calendarId" : "일정 고유 아이디",
+            "startDate" : "시작일",
+            "endDate" : "종료일",
+            "title" : "일정제목",
+            "memo" : "메모",
+            "color" : "일정표 색코드",
+            "createDate" : "추가일",
+            "modifiedDate" : "수정일"
+        },
+        "more ..."
+    ]
+}
+```
+### 6-2 일정 상세보기
+* URL
+```TEXT
+GET /api/schedule/{scheduleId}
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|scheduleId|Long|true|일정 고유 아이디|
+
+
+* RETURN
+```JSON
+{
+    "data" : {
+        "calendarId" : "일정 고유 아이디",
+        "startDate" : "시작일",
+        "endDate" : "종료일",
+        "title" : "일정제목",
+        "memo" : "메모",
+        "color" : "일정표 색코드",
+        "createDate" : "추가일",
+        "modifiedDate" : "수정일"
+    }
+}
+```
+### 6-3 일정 추가
+* URL
+```TEXT
+POST /api/schedule
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|start|String|true|범위 시작일 <br> pattern = "yyyy-MM-dd"|
+|end|String|true|범위 종료일 <br> pattern = "yyyy-MM-dd"|
+|title|String|false|일정 제목|
+|memo|String|false|일정 메모|
+|color|String|false|일정표 색코드|
+
+* RETURN
+```JSON
+{
+    "data" : "일정 고유 아이디"
+}
+```
+### 6-4 일정 수정
+* URL
+```TEXT
+PUT /api/schedule/{scheduleId}
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|scheduleId|Long|true|일정 고유 아이디|
+|start|String|true|범위 시작일 <br> pattern = "yyyy-MM-dd"|
+|end|String|true|범위 종료일 <br> pattern = "yyyy-MM-dd"|
+|title|String|false|일정 제목|
+|memo|String|false|일정 메모|
+|color|String|false|일정표 색코드|
+
+* RETURN
+```JSON
+{
+    "data" : {
+      "calendarId" : "일정 고유 아이디",
+      "startDate" : "시작일",
+      "endDate" : "종료일",
+      "title" : "일정제목",
+      "memo" : "메모",
+      "color" : "일정표 색코드",
+      "createDate" : "추가일",
+      "modifiedDate" : "수정일"
+    }
+}
+```
+### 6-5 일정 삭제
+* URL
+```TEXT
+DELETE /api/schedule/{scheduleId}
+```
+* Request Headers
+
+```TEXT
+Authorization : TOKEN
+```
+* PARAMETER
+
+|파라미터|타입|필수여부|설명|
+|-----|---|---|---|
+|scheduleId|Long|true|일정 고유 아이디|
+
+```
+## 7. 예외
 ### 예외 스펙
 
 |파라미터|타입|설명|
@@ -877,6 +1028,13 @@ DELETE /api/volumes/{volumeId}
 |message|String|예외 메시지|
 |exception|String|예외 종류|
 
+#### TypeMismatchException 시 다음 내용이 추가된다.
+|파라미터|타입|설명|
+|-----|---|---|
+|requiredType|String|사용 가능 타입|
+|valueType|String|요청 타입|
+|value|String|요청 값|
+
 * ex) 유저를 찾을 수 없는 경우
 ```JSON
 {
@@ -886,5 +1044,31 @@ DELETE /api/volumes/{volumeId}
   "path": "/api/members/5",
   "message": "유저를 찾을 수 없습니다",
   "exception": "java.lang.IllegalStateException"
+}
+```
+* ex) 타입이 맞지 않는 값이 바인딩 된 경우
+```JSON
+{
+  "timestamp": "2022-01-20T19:04:25.5522002",
+  "status": 400,
+  "error": "BAD_REQUEST",
+  "path": "/api/members/word",
+  "message": "타입이 올바르지 않습니다.",
+  "exception": "org.springframework.web.method.annotation.MethodArgumentTypeMismatchException",
+  "requiredType": "java.lang.Long",
+  "valueType": "java.lang.String",
+  "value": "word"
+}
+```
+
+* 이 외의 상황
+```JSON
+{
+  "timestamp": "2022-01-20T19:13:25.6063587",
+  "status": 500,
+  "error": "INTERNAL_SERVER_ERROR",
+  "path": "request uri",
+  "message": "알 수 없는 오류",
+  "exception": "java.lang.Exception"
 }
 ```

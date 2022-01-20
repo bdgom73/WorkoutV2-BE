@@ -2,6 +2,7 @@ package app.workout.Controller.Calendar;
 
 import app.workout.Controller.ReturnType.ReturnTypeV1;
 import app.workout.Entity.Calendar.Calendar;
+import app.workout.Messages.ErrorMessages;
 import app.workout.Service.ArgumentResolver.Login.Login;
 import app.workout.Service.Calendar.CalendarService;
 import lombok.Data;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,16 +29,16 @@ public class CalendarController {
      * 범위의 스케쥴 정보 가져오기
      * */
     @GetMapping("/schedule")
-    public ReturnTypeV1<List<CalendarRequest>> rangeSchedule(
+    public ReturnTypeV1<List<CalendarResponse>> rangeSchedule(
             @RequestParam(value = "start", defaultValue = "#{T(java.time.LocalDateTime).now()}")
             @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam(value = "end", defaultValue = "#{T(java.time.LocalDateTime).now()}")
             @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE) LocalDate end,
             @Login Long memberId
     ){
-        if(memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
+        if(memberId == null) throw new IllegalStateException(ErrorMessages.NO_LOGIN_USER);
         List<Calendar> calendars = calendarService.rangeSchedule(memberId, start, end);
-        List<CalendarRequest> resultData = calendars.stream().map(CalendarRequest::new).collect(Collectors.toList());
+        List<CalendarResponse> resultData = calendars.stream().map(CalendarResponse::new).collect(Collectors.toList());
         return new ReturnTypeV1<>(resultData);
     }
 
@@ -45,9 +47,9 @@ public class CalendarController {
      * */
     @GetMapping("/schedule/{scheduleId}")
     public ReturnTypeV1<CalendarResponse> getSchedule(@PathVariable("scheduleId") Long scheduleId, @Login Long memberId){
-        if(memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
+        if(memberId == null) throw new IllegalStateException(ErrorMessages.NO_LOGIN_USER);
         Calendar schedule = calendarService.findById(scheduleId);
-        if(!memberId.equals(schedule.getMember().getId())) throw new IllegalStateException("권한이 없습니다");
+        if(!memberId.equals(schedule.getMember().getId())) throw new IllegalStateException(ErrorMessages.NO_PERMISSION);
         return new ReturnTypeV1<>(new CalendarResponse(schedule));
     }
 
@@ -56,7 +58,7 @@ public class CalendarController {
      * */
     @PostMapping("/schedule")
     public ReturnTypeV1<Long> addSchedule(@RequestBody CalendarRequest calendarRequest, @Login Long memberId){
-        if(memberId == null) throw new IllegalStateException("로그인 정보가 존재하지 않습니다");
+        if(memberId == null) throw new IllegalStateException(ErrorMessages.NO_LOGIN_USER);
         Long calendarId = calendarService.addSchedule(memberId,
                 calendarRequest.getStartDate(), calendarRequest.getEndDate(),
                 calendarRequest.getTitle(), calendarRequest.getMemo(), calendarRequest.getColor());
@@ -69,7 +71,7 @@ public class CalendarController {
      * */
     @PutMapping("/schedule/{scheduleId}")
     public ReturnTypeV1<CalendarResponse> editSchedule(@Login Long memberId, @PathVariable("scheduleId") Long scheduleId, @RequestBody CalendarRequest calendarRequest){
-        if(memberId == null) throw new IllegalStateException("해당 일정을 찾을 수 없습니다");
+        if(memberId == null) throw new IllegalStateException(ErrorMessages.NOT_FOUND_SCHEDULE);
         Calendar calendar = calendarService.updateSchedule(scheduleId, memberId,
                 calendarRequest.getStartDate(), calendarRequest.getEndDate(),
                 calendarRequest.getTitle(), calendarRequest.getMemo(), calendarRequest.getColor());
@@ -81,7 +83,7 @@ public class CalendarController {
      * */
     @DeleteMapping("/schedule/{scheduleId}")
     public void deleteSchedule(@Login Long memberId, @PathVariable("scheduleId") Long scheduleId){
-        if(memberId == null) throw new IllegalStateException("해당 일정을 찾을 수 없습니다");
+        if(memberId == null) throw new IllegalStateException(ErrorMessages.NOT_FOUND_SCHEDULE);
         calendarService.deleteSchedule(scheduleId,memberId);
     }
 
@@ -108,20 +110,23 @@ public class CalendarController {
     }
     @Data
     private static class CalendarResponse{
-        private Long id;
+        private Long calendarId;
         private LocalDate startDate;
         private LocalDate endDate;
         private String title;
         private String memo;
         private String color;
-
+        private LocalDateTime createdDate;
+        private LocalDateTime modifiedDate;
         public CalendarResponse(Calendar calendar) {
-            this.id = calendar.getId();
+            this.calendarId = calendar.getId();
             this.startDate = calendar.getStartDate();
             this.endDate = calendar.getEndDate();
             this.title = calendar.getTitle();
             this.memo = calendar.getMemo();
             this.color = calendar.getColor();
+            this.createdDate = calendar.getCreatedDate();
+            this.modifiedDate = calendar.getModifiedDate();
         }
     }
 }

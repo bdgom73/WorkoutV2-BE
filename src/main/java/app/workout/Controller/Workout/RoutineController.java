@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -135,7 +136,8 @@ public class RoutineController {
         private Long originalAuthor;
         private Long memberId;
         private String memberNickname;
-
+        private LocalDateTime createdDate;
+        private LocalDateTime modifiedDate;
         public RoutineResponse(Routine routine) {
             this.routineId = routine.getId();
             this.title = routine.getTitle();
@@ -144,6 +146,8 @@ public class RoutineController {
             this.originalAuthor = routine.getOriginalAuthor();
             this.memberId = routine.getMember().getId();
             this.memberNickname = routine.getMember().getNickname();
+            this.createdDate = routine.getCreatedDate();
+            this.modifiedDate =routine.getModifiedDate();
         }
     }
 
