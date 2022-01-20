@@ -6,7 +6,7 @@
 3. [운동관리](#3-운동관리)
 4. [루틴관리](#4-루틴관리)
 5. [볼륨관리](#5-볼륨관리)
-
+6. [예외](#6-예외)
 
 ## 1. 회원관리
 ### 1-1 로그인
@@ -864,3 +864,27 @@ DELETE /api/volumes/{volumeId}
 |파라미터|타입|필수여부|설명|
 |-----|---|---|---|
 |volumeId|Long|true|볼륨의 고유 아이디|
+
+## 6. 예외
+### 예외 스펙
+
+|파라미터|타입|설명|
+|-----|---|---|
+|timestamp|LocalDateTime|예외 발생 시간|
+|status|int|HTTP 상태 코드|
+|error|String|HTTP 상태 메시지|
+|path|String|예외 발생 URI|
+|message|String|예외 메시지|
+|exception|String|예외 종류|
+
+* ex) 유저를 찾을 수 없는 경우
+```JSON
+{
+  "timestamp": "2022-01-20T15:14:16.6031399",
+  "status": 400,
+  "error": "BAD_REQUEST",
+  "path": "/api/members/5",
+  "message": "유저를 찾을 수 없습니다",
+  "exception": "java.lang.IllegalStateException"
+}
+```

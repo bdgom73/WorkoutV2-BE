@@ -1,4 +1,4 @@
-package app.workout.Service;
+package app.workout.Messages;
 
 
 import org.apache.tomcat.util.http.parser.Authorization;

@@ -2,6 +2,7 @@ package app.workout.Service.Calendar;
 
 import app.workout.Entity.Calendar.Calendar;
 import app.workout.Entity.Member.Member;
+import app.workout.Messages.ErrorMessages;
 import app.workout.Repository.CalendarRepository;
 import app.workout.Repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ public class CalendarService {
         return calendarRepository.findById(scheduleId).orElseThrow(()->{
             throw new IllegalStateException("찾을 수 없는 일정입니다");
         });
+
+
     }
 
 
@@ -51,9 +54,8 @@ public class CalendarService {
      * */
     @Transactional
     public Long addSchedule(Long memberId , LocalDate start, LocalDate end, String title, String memo, String color){
-//        Member member = new Member(); //TODO Member 설정
         Member member = memberRepository.findById(memberId).orElseThrow(() -> {
-            throw new IllegalStateException("찾을 수 없는 유저입니다.");
+            throw new IllegalStateException(ErrorMessages.NOT_FOUND_USER);
         });
         Calendar calendar = new Calendar();
         calendar.setDate(start,end);
@@ -69,10 +71,10 @@ public class CalendarService {
     @Transactional
     public Calendar updateSchedule(Long scheduleId, Long memberId, LocalDate start, LocalDate end, String title, String memo, String color){
         Calendar calendar = calendarRepository.findById(scheduleId).orElseThrow(() -> {
-            throw new IllegalStateException("찾을 수 없는 일정입니다");
+            throw new IllegalStateException(ErrorMessages.NOT_FOUND_SCHEDULE);
         });
         if(!Objects.equals(scheduleId, memberId)){
-            throw new IllegalStateException("수정 권한이 없습니다.");
+            throw new IllegalStateException(ErrorMessages.NO_PERMISSION);
         }
         calendar.setDate(start,end);
         calendar.setContent(title,memo,color);
@@ -81,7 +83,7 @@ public class CalendarService {
     @Transactional
     public Calendar updateSchedule(Long scheduleId, LocalDate start, LocalDate end, String title, String memo, String color){
         Calendar calendar = calendarRepository.findById(scheduleId).orElseThrow(() -> {
-            throw new IllegalStateException("찾을 수 없는 일정입니다");
+            throw new IllegalStateException(ErrorMessages.NOT_FOUND_SCHEDULE);
         });
         calendar.setDate(start,end);
         calendar.setContent(title,memo,color);
@@ -102,7 +104,7 @@ public class CalendarService {
     public void deleteSchedule(Long scheduleId, Long memberId){
         Calendar calendar = findById(scheduleId);
         if(!Objects.equals(calendar.getMember().getId(), memberId)){
-            throw new IllegalStateException("수정 권한이 없습니다.");
+            throw new IllegalStateException(ErrorMessages.NO_PERMISSION);
         }
         calendarRepository.delete(calendar);
     }

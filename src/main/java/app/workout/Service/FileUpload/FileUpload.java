@@ -1,5 +1,6 @@
 package app.workout.Service.FileUpload;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 
 
+@Slf4j
 @Component
 @PropertySource("classpath:variable/files.properties")
 public class FileUpload {
@@ -57,7 +59,7 @@ public class FileUpload {
             file.transferTo(new File(safe_pathname));
             return save_pathname;
         }catch (Exception e) {
-            e.printStackTrace();
+            log.error("FILE EXCEPTION e", e);
             return null;
         }
     }

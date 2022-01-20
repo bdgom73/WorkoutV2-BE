@@ -6,6 +6,7 @@ import app.workout.Entity.Workout.Recommendation;
 import app.workout.Entity.Workout.Routine;
 import app.workout.Entity.Workout.Volume;
 import app.workout.Entity.Workout.Workout;
+import app.workout.Messages.ErrorMessages;
 import app.workout.Repository.Routine.RecommendationRepository;
 import app.workout.Repository.Routine.RoutineRepository;
 import app.workout.Service.Member.MemberService;
@@ -122,10 +123,10 @@ public class RoutineService {
     @Transactional
     public Long editRoutine(Long routineId, Long memberId, String title, ExercisePart part){
         Routine routine = routineRepository.findMemberFetch(routineId).orElseThrow(() -> {
-            throw new IllegalStateException("찾을 수 없는 루틴입니다");
+            throw new IllegalStateException(ErrorMessages.NOT_FOUND_ROUTINE);
         });
         if(!Objects.equals(routine.getMember().getId(), memberId)){
-            throw new IllegalStateException("수정 권한이 없습니다");
+            throw new IllegalStateException(ErrorMessages.NO_PERMISSION);
         }
         routine.changeRoutine(title,part);
         return routine.getId();
@@ -139,7 +140,7 @@ public class RoutineService {
     public void deleteRoutine(Long routineId, Long memberId){
         Routine routine = findByMember(routineId);
         if(!Objects.equals(routine.getMember().getId(), memberId)){
-            throw new IllegalStateException("권한이 없습니다");
+            throw new IllegalStateException(ErrorMessages.NO_PERMISSION);
         }
         routineRepository.delete(routine);
     }
@@ -147,7 +148,7 @@ public class RoutineService {
     @Transactional
     public Long copyRoutine(Long routineId , Long memberId){
         Routine routine = findByMember(routineId);
-        if(!routine.isShare()) throw new IllegalStateException("공유가 불가능한 루틴입니다");
+        if(!routine.isShare()) throw new IllegalStateException(ErrorMessages.NOT_SHAREABLE);
         Member member = memberService.findOne(memberId);
         ArrayList<Volume> copyVolumes = new ArrayList<>();
         routine.getVolumes().forEach(v-> copyVolumes.add(Volume.createVolume(v.getNum(),v.getSets(),v.getWorkout())));
@@ -161,7 +162,7 @@ public class RoutineService {
     @Transactional
     public void recommend(Long routineId, Long memberId){
         recommendationRepository.findByRoutineAndMember(routineId, memberId).ifPresent(r->{
-            throw new IllegalStateException("이미 추천 했습니다");
+            throw new IllegalStateException(ErrorMessages.EXISTS_RECOMMEND);
         });
         Routine routine = findOne(routineId);
         Member member = memberService.findOne(memberId);
@@ -171,7 +172,7 @@ public class RoutineService {
     @Transactional
     public void recommendCancel(Long routineId, Long memberId){
         Recommendation recommendation = recommendationRepository.findByRoutineAndMember(routineId, memberId).orElseThrow(() -> {
-            throw new IllegalStateException("추천 기록이 없습니다");
+            throw new IllegalStateException(ErrorMessages.NOT_FOUND_RECOMMEND);
         });
         recommendationRepository.delete(recommendation);
     }

@@ -1,12 +1,9 @@
 package app.workout.Service.Jwt;
 
-import app.workout.Service.CommonConst;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class JwtTokenServiceTest {

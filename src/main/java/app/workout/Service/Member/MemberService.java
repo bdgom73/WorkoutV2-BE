@@ -2,6 +2,7 @@ package app.workout.Service.Member;
 
 import app.workout.Entity.Member.BodyData;
 import app.workout.Entity.Member.Member;
+import app.workout.Messages.ErrorMessages;
 import app.workout.Repository.Member.MemberRepository;
 import app.workout.Service.FileUpload.FileUpload;
 import app.workout.Service.Jwt.JwtTokenService;
@@ -121,13 +122,13 @@ public class MemberService {
         // password Regex 암호의 정규표현식
         String pattern = "^[a-zA-Z0-9\\d~!@#$%^&*]{10,}$";
         boolean matches = Pattern.matches(pattern, password);
-        if(!matches) throw new IllegalStateException("비밀번호는 10자리 이상에 특수문자가 포함되어야합니다.");
+        if(!matches) throw new IllegalStateException(ErrorMessages.ERROR_REGEX_PASSWORD);
     }
 
     private void emailCheck(String email){
         // 이메일 여부 체크
         memberRepository.findByEmail(email).ifPresent(m->{
-            throw new IllegalStateException("이미 존재하는 이메일입니다.");
+            throw new IllegalStateException(ErrorMessages.EXISTS_EMAIL);
         });
     }
 

@@ -1,6 +1,7 @@
 package app.workout.Entity.Workout;
 
 import app.workout.Entity.Member.Member;
+import app.workout.Messages.ErrorMessages;
 import app.workout.Service.FileUpload.FileUpload;
 import app.workout.Service.Routine.RoutineService;
 import app.workout.Service.Routine.VolumeService;
@@ -31,6 +32,9 @@ class RoutineTest {
     void test(){
         String classpath = fileUpload.getClasspath();
         System.out.println("classpath = " + classpath);
+
+        String noLoginUser = ErrorMessages.NO_LOGIN_USER;
+        System.out.println("noLoginUser = " + noLoginUser);
     }
 
     @Test

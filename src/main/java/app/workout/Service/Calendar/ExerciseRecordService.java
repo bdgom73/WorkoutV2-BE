@@ -2,6 +2,7 @@ package app.workout.Service.Calendar;
 
 import app.workout.Entity.Calendar.ExerciseRecord;
 import app.workout.Entity.Member.Member;
+import app.workout.Messages.ErrorMessages;
 import app.workout.Repository.ExerciseRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class ExerciseRecordService {
      * 특정 운동기록 찾기
      * */
     public ExerciseRecord getExerciseRecord(Long exerciseId){
-        return exerciseRecordRepository.findById(exerciseId).orElseThrow(()-> {throw new IllegalStateException("존재하지 않는 기록입니다");});
+        return exerciseRecordRepository.findById(exerciseId).orElseThrow(()-> {throw new IllegalStateException(ErrorMessages.NOT_FOUND_RECODE);});
     }
 
     /**
@@ -48,7 +49,7 @@ public class ExerciseRecordService {
     @Transactional
     public Long updateExerciseRecode(Long exerciseRecodeId, LocalDate date, String memo, boolean isWorkout){
         ExerciseRecord record = exerciseRecordRepository.findById(exerciseRecodeId).orElseThrow(() -> {
-            throw new IllegalStateException("존재하지 않은 기록입니다");
+            throw new IllegalStateException(ErrorMessages.NOT_FOUND_RECODE);
         });
         record.changeExerciseRecode(date,memo);
         if(isWorkout) record.doExercise();
@@ -62,7 +63,7 @@ public class ExerciseRecordService {
     @Transactional
     public void updateWorkoutState(Long exerciseRecodeId, boolean isWorkout){
         ExerciseRecord record = exerciseRecordRepository.findById(exerciseRecodeId).orElseThrow(() -> {
-            throw new IllegalStateException("존재하지 않은 기록입니다");
+            throw new IllegalStateException(ErrorMessages.NOT_FOUND_RECODE);
         });
         if(isWorkout) record.doExercise();
         else record.doNotExercise();

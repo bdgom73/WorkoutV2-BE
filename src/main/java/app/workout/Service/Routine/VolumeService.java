@@ -2,6 +2,7 @@ package app.workout.Service.Routine;
 
 import app.workout.Entity.Workout.Volume;
 import app.workout.Entity.Workout.Workout;
+import app.workout.Messages.ErrorMessages;
 import app.workout.Repository.Workout.VolumeRepository;
 import app.workout.Service.Workout.WorkoutService;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,7 @@ public class VolumeService {
      * @throws IllegalStateException 볼륨을 찾을 수 없습니다
      * */
     public Volume findOneWithWorkout(Long volumeId){
-        return volumeRepository.findOne(volumeId).orElseThrow(()->{throw new IllegalStateException("볼륨을 찾을 수 없습니다");});
+        return volumeRepository.findOne(volumeId).orElseThrow(()->{throw new IllegalStateException(ErrorMessages.NOT_FOUND_VOLUME);});
     }
 
     /**

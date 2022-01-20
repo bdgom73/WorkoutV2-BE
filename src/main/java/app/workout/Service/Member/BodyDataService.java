@@ -2,6 +2,7 @@ package app.workout.Service.Member;
 
 import app.workout.Entity.Member.BodyData;
 import app.workout.Entity.Member.Member;
+import app.workout.Messages.ErrorMessages;
 import app.workout.Repository.Member.BodyDataRepository;
 import app.workout.Repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class BodyDataService {
     @Transactional
     public Long createBodyData(Long memberId, int age , double height, double weight){
         Member member = memberRepository.findById(memberId).orElseThrow(() -> {
-            throw new IllegalStateException("존재하지 않는 유저입니다.");
+            throw new IllegalStateException(ErrorMessages.NOT_FOUND_USER);
         });
         BodyData bodyData = new BodyData(age, height, weight);
         bodyData.addMember(member);
@@ -58,7 +59,7 @@ public class BodyDataService {
      * */
     public BodyData findById(Long bodyDataId){
         return bodyDataRepository.findById(bodyDataId).orElseThrow(()-> {
-           throw  new IllegalStateException("찾을 수 없는 데이터 입니다");
+           throw  new IllegalStateException(ErrorMessages.NOT_FOUND_DATA);
         });
     }
 
@@ -68,7 +69,7 @@ public class BodyDataService {
     @Transactional
     public Long updateBodyData(Long bodyDataId ,int age, double height, double weight){
         BodyData bodyData = bodyDataRepository.findById(bodyDataId).orElseThrow(() -> {
-            throw new IllegalStateException("변경가능한 데이터가 없습니다");
+            throw new IllegalStateException(ErrorMessages.NOT_FOUND_DATA);
         });
         bodyData.setAge(age);
         bodyData.setHeight(height);
@@ -83,7 +84,7 @@ public class BodyDataService {
     public void deleteBodyData(Long bodyDataId, Long memberId){
         BodyData bodyData = bodyDataRepository.findByIdJoinMember(bodyDataId).orElseThrow();
         if(!Objects.equals(bodyData.getMember().getId(), memberId)){
-            throw new IllegalStateException("삭제 권한이 없습니다");
+            throw new IllegalStateException(ErrorMessages.NO_PERMISSION);
         }
         bodyDataRepository.deleteById(bodyDataId);
     }

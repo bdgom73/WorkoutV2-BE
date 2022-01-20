@@ -1,6 +1,6 @@
 package app.workout.Service.ArgumentResolver.Login;
 
-import app.workout.Service.CommonConst;
+import app.workout.Messages.CommonConst;
 import app.workout.Service.Jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
 
 @Slf4j
 @Component
@@ -25,8 +24,7 @@ public class LoginCheckArgumentResolver implements HandlerMethodArgumentResolver
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasParameterAnnotation = parameter.hasParameterAnnotation(Login.class);
         boolean hasMemberTypeLong = Long.class.isAssignableFrom(parameter.getParameterType());
-        boolean hasMemberTypeString = Long.class.isAssignableFrom(parameter.getParameterType());
-        return hasParameterAnnotation && (hasMemberTypeLong || hasMemberTypeString) ;
+        return hasParameterAnnotation && hasMemberTypeLong;
     }
 
     @Override
@@ -42,6 +40,7 @@ public class LoginCheckArgumentResolver implements HandlerMethodArgumentResolver
             jwtTokenService.expired(token);
             Long userId = jwtTokenService.getUserInformation(token);
             log.info("Access User [{}][{}]",requestURI,userId);
+
             return userId;
         }catch (Exception e){
             log.info("Inaccessible User [{}]", requestURI);

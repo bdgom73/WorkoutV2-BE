@@ -1,6 +1,7 @@
 package app.workout.Service.Jwt;
 
-import app.workout.Service.CommonConst;
+import app.workout.Messages.CommonConst;
+import app.workout.Messages.ErrorMessages;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -9,16 +10,15 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-import static app.workout.Service.CommonConst.JWT_PROPERTIES;
+import static app.workout.Messages.CommonConst.JWT_PROPERTIES;
 
-@Component
+@Service
 @PropertySource(JWT_PROPERTIES)
 public class JwtTokenService {
 
@@ -87,7 +87,7 @@ public class JwtTokenService {
     }
     public void expired(String token) {
        if(!isExpired(token)){
-           throw new IllegalStateException("만료된 토큰입니다");
+           throw new IllegalStateException(ErrorMessages.EXPIRED_TOKEN);
        }
     }
 
@@ -99,7 +99,7 @@ public class JwtTokenService {
      * */
     private void TokenEmpty(String authorizationToken){
         if(authorizationToken == null){
-            throw new NullPointerException("Authorization is Empty");
+            throw new NullPointerException(ErrorMessages.NOT_FOUND_TOKEN);
         }
     }
 
@@ -110,7 +110,7 @@ public class JwtTokenService {
      * */
     private void InvalidToken(String authorizationToken){
         if(!authorizationToken.contains("Bearer ")){
-            throw new IllegalStateException("Invalid Token");
+            throw new IllegalStateException(ErrorMessages.INVALID_TOKEN);
         }
     }
 
