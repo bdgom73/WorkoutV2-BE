@@ -7,6 +7,7 @@ import app.workout.Entity.Workout.Workout;
 import app.workout.Repository.Member.MemberRepository;
 import app.workout.Repository.Routine.RoutineRepository;
 import app.workout.Repository.Workout.WorkoutRepository;
+import app.workout.Service.Member.ApiClientService;
 import app.workout.Service.Member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -29,6 +30,9 @@ public class WorkoutApplication {
 	private WorkoutRepository workoutRepository;
 	@Autowired
 	private RoutineRepository routineRepository;
+
+	@Autowired
+	private ApiClientService apiClientService;
 	public static void main(String[] args) {
 
 		SpringApplication.run(WorkoutApplication.class, args);
@@ -40,6 +44,9 @@ public class WorkoutApplication {
 		memberService.join("testB","testtesttest!","testerB","testerB");
 
 		Optional<Member> byId = memberRepository.findById(join);
+
+		apiClientService.issueApiKey(join);
+
 
 		Workout workoutA = new Workout("workoutA",null,null);
 		Workout workoutB = new Workout("workoutB",null,null);

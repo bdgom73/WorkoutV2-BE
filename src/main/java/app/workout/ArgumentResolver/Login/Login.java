@@ -1,4 +1,4 @@
-package app.workout.Service.ArgumentResolver.Login;
+package app.workout.ArgumentResolver.Login;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -2,7 +2,7 @@ package app.workout.Controller.Member;
 
 import app.workout.Controller.ReturnType.ReturnTypeV1;
 import app.workout.Entity.Member.Member;
-import app.workout.Service.ArgumentResolver.Login.Login;
+import app.workout.ArgumentResolver.Login.Login;
 import app.workout.Service.CustomPageRequest;
 import app.workout.Service.Member.MemberDataDto;
 import app.workout.Service.Member.MemberService;

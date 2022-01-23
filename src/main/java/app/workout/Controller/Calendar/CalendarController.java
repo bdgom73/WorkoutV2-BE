@@ -3,7 +3,7 @@ package app.workout.Controller.Calendar;
 import app.workout.Controller.ReturnType.ReturnTypeV1;
 import app.workout.Entity.Calendar.Calendar;
 import app.workout.Messages.ErrorMessages;
-import app.workout.Service.ArgumentResolver.Login.Login;
+import app.workout.ArgumentResolver.Login.Login;
 import app.workout.Service.Calendar.CalendarService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +36,6 @@ public class CalendarController {
             @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE) LocalDate end,
             @Login Long memberId
     ){
-        if(memberId == null) throw new IllegalStateException(ErrorMessages.NO_LOGIN_USER);
         List<Calendar> calendars = calendarService.rangeSchedule(memberId, start, end);
         List<CalendarResponse> resultData = calendars.stream().map(CalendarResponse::new).collect(Collectors.toList());
         return new ReturnTypeV1<>(resultData);
@@ -47,7 +46,6 @@ public class CalendarController {
      * */
     @GetMapping("/schedule/{scheduleId}")
     public ReturnTypeV1<CalendarResponse> getSchedule(@PathVariable("scheduleId") Long scheduleId, @Login Long memberId){
-        if(memberId == null) throw new IllegalStateException(ErrorMessages.NO_LOGIN_USER);
         Calendar schedule = calendarService.findById(scheduleId);
         if(!memberId.equals(schedule.getMember().getId())) throw new IllegalStateException(ErrorMessages.NO_PERMISSION);
         return new ReturnTypeV1<>(new CalendarResponse(schedule));
@@ -58,7 +56,6 @@ public class CalendarController {
      * */
     @PostMapping("/schedule")
     public ReturnTypeV1<Long> addSchedule(@RequestBody CalendarRequest calendarRequest, @Login Long memberId){
-        if(memberId == null) throw new IllegalStateException(ErrorMessages.NO_LOGIN_USER);
         Long calendarId = calendarService.addSchedule(memberId,
                 calendarRequest.getStartDate(), calendarRequest.getEndDate(),
                 calendarRequest.getTitle(), calendarRequest.getMemo(), calendarRequest.getColor());
@@ -71,7 +68,6 @@ public class CalendarController {
      * */
     @PutMapping("/schedule/{scheduleId}")
     public ReturnTypeV1<CalendarResponse> editSchedule(@Login Long memberId, @PathVariable("scheduleId") Long scheduleId, @RequestBody CalendarRequest calendarRequest){
-        if(memberId == null) throw new IllegalStateException(ErrorMessages.NOT_FOUND_SCHEDULE);
         Calendar calendar = calendarService.updateSchedule(scheduleId, memberId,
                 calendarRequest.getStartDate(), calendarRequest.getEndDate(),
                 calendarRequest.getTitle(), calendarRequest.getMemo(), calendarRequest.getColor());
@@ -83,7 +79,6 @@ public class CalendarController {
      * */
     @DeleteMapping("/schedule/{scheduleId}")
     public void deleteSchedule(@Login Long memberId, @PathVariable("scheduleId") Long scheduleId){
-        if(memberId == null) throw new IllegalStateException(ErrorMessages.NOT_FOUND_SCHEDULE);
         calendarService.deleteSchedule(scheduleId,memberId);
     }
 

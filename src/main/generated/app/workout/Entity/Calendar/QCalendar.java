@@ -22,7 +22,12 @@ public class QCalendar extends EntityPathBase<Calendar> {
 
     public static final QCalendar calendar = new QCalendar("calendar");
 
+    public final app.workout.Entity.QBaseEntity _super = new app.workout.Entity.QBaseEntity(this);
+
     public final StringPath color = createString("color");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
     public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
 
@@ -31,6 +36,9 @@ public class QCalendar extends EntityPathBase<Calendar> {
     public final app.workout.Entity.Member.QMember member;
 
     public final StringPath memo = createString("memo");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
 

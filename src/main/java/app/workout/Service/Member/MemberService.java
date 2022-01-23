@@ -37,9 +37,10 @@ public class MemberService {
      *
      * @return*/
     public String login(String email, String password){
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다"));
-        if(member == null) return null;
-        if(!passwordEncoder.matches(password, member.getPassword())) return null;
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> {
+            throw new IllegalStateException(ErrorMessages.NOT_FOUND_USER);
+        });
+        if(!passwordEncoder.matches(password, member.getPassword())) throw new IllegalStateException(ErrorMessages.NOT_MATCHING_PASSWORD);
         return jwtTokenService.createToken(member.getId());
     }
 

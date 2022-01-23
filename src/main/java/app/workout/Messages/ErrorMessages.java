@@ -28,6 +28,8 @@ public interface ErrorMessages {
 
    String ERROR_REGEX_PASSWORD = "비밀번호는 10자리 이상에 특수문자가 포함되어야합니다";
 
+   String NOT_MATCHING_PASSWORD = "패스워드가 올바르지 않습니다";
+
    String NOT_FOUND_ROUTINE = "찾을 수 없는 루틴 입니다";
 
    String NOT_SHAREABLE = "공유가 불가능 합니다";
@@ -38,5 +40,13 @@ public interface ErrorMessages {
 
    String NOT_FOUND_VOLUME  = "볼륨을 찾을 수 없습니다";
 
+   String EXISTS_ISSIE_KEY = "이미 키가 발급되었습니다";
 
+   String EXISTS_ISSIE_KEY_USER = "이미 키가 발급된 계정입니다";
+
+   String INVALID_KEY = "유효하지 않는 키 입니다";
+
+   String NOT_EXISTS_ISSIE_KEY = "발급된 키가 아닙니다";
+
+   String NOT_FOUND_KEY = "API 접근 권한이 없습니다";
 }

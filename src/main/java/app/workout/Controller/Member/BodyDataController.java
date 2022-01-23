@@ -2,7 +2,7 @@ package app.workout.Controller.Member;
 
 import app.workout.Controller.ReturnType.ReturnTypeV1;
 import app.workout.Entity.Member.BodyData;
-import app.workout.Service.ArgumentResolver.Login.Login;
+import app.workout.ArgumentResolver.Login.Login;
 import app.workout.Service.Member.BodyDataService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
